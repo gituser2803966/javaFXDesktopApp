@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane cache="true" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.ChartController">
+   <bottom>
+      <AnchorPane BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <ScrollPane cache="true" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+        <content>
+          <AnchorPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="643.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                                 <children>
+                                    <ComboBox fx:id="monthsComboBox" cache="true" promptText="Chọn tháng" style="-fx-background-color: #00AFF0;">
+                                       <VBox.margin>
+                                          <Insets left="40.0" />
+                                       </VBox.margin>
+                                    </ComboBox>
+                                    <LineChart fx:id="monthLineChart" cache="true" title="THÁNG 7">
+                                      <xAxis>
+                                        <CategoryAxis label="Các ngày trong tháng" side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis label="Số lượng" side="LEFT" />
+                                      </yAxis>
+                                    </LineChart>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane>
+                           <children>
+                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <children>
+                                    <ComboBox fx:id="yearsComboBox" cache="true" promptText="Chọn năm" style="-fx-background-color: #00AFF0;" visibleRowCount="12">
+                                       <VBox.margin>
+                                          <Insets left="40.0" />
+                                       </VBox.margin>
+                                    </ComboBox>
+                                    <BarChart fx:id="yearLineChart">
+                                      <xAxis>
+                                        <CategoryAxis label="Các tháng trong năm" side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis label="Số lượng" side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </center>
+</BorderPane>
