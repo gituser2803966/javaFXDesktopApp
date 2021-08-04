@@ -2,22 +2,25 @@ package org.openjfx;
 
 import javafx.beans.property.*;
 import org.bson.types.ObjectId;
+import java.util.UUID;
 
 import java.util.Date;
 
 public class Bus {
 
     private ObjectId id;
+
+    private StringProperty uuid = new SimpleStringProperty(UUID.randomUUID().toString());
     //job code
-    private StringProperty jobCode = new SimpleStringProperty("jobCode");
+    private StringProperty jobCode = new SimpleStringProperty("");
     //nhan hang
-    private StringProperty brand = new SimpleStringProperty("brand");
+    private StringProperty brand = new SimpleStringProperty("");
     //ma so tuyen
-    private StringProperty routeNumber = new SimpleStringProperty("route number");
+    private StringProperty routeNumber = new SimpleStringProperty("");
     //ten tuyen
-    private StringProperty routeName = new SimpleStringProperty("route name");
+    private StringProperty routeName = new SimpleStringProperty("");
     //bien so xe
-    private StringProperty numberPlate = new SimpleStringProperty("number plate");
+    private StringProperty numberPlate = new SimpleStringProperty("");
     //hop dong
     private BooleanProperty contract = new SimpleBooleanProperty(true);
     // ngay bat dau
@@ -25,14 +28,15 @@ public class Bus {
     // ngay ket thuc
     private ObjectProperty<Date> endDay = new SimpleObjectProperty<>(new Date());
     //ghi chu
-    private StringProperty note = new SimpleStringProperty("note");
+    private StringProperty note = new SimpleStringProperty("");
 
 
     public Bus() {
     }
 
-    public Bus(ObjectId id, StringProperty jobCode, StringProperty brand, StringProperty routeNumber, StringProperty routeName, StringProperty numberPlate, BooleanProperty contract, ObjectProperty<Date> startDay, ObjectProperty<Date> endDay, StringProperty note) {
+    public Bus(ObjectId id, StringProperty uuid, StringProperty jobCode, StringProperty brand, StringProperty routeNumber, StringProperty routeName, StringProperty numberPlate, BooleanProperty contract, ObjectProperty<Date> startDay, ObjectProperty<Date> endDay, StringProperty note) {
         this.id = id;
+        this.uuid = uuid;
         this.jobCode = jobCode;
         this.brand = brand;
         this.routeNumber = routeNumber;
@@ -42,6 +46,18 @@ public class Bus {
         this.startDay = startDay;
         this.endDay = endDay;
         this.note = note;
+    }
+
+    public String getUuid() {
+        return uuid.get();
+    }
+
+    public StringProperty uuidProperty() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid.set(uuid);
     }
 
     public Date getStartDay() {

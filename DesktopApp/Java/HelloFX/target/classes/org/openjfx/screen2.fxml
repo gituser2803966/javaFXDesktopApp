@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: red;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Screen2Controller">
+   <children>
+      <Button layoutX="258.0" layoutY="151.0" mnemonicParsing="false" onAction="#backToScreen1" text="screen2" />
+   </children>
+</AnchorPane>

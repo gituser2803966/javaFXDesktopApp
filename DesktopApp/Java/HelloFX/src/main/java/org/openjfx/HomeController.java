@@ -7,16 +7,13 @@ import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.UpdateResult;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -27,7 +24,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 import org.openjfx.db.MongoDBConnection;
 
 import java.net.URL;
@@ -36,8 +32,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Date;
-import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
@@ -57,6 +53,9 @@ public class HomeController implements Initializable, ControlledScreen {
 
     @FXML
     private TableView<Bus> busTable;
+
+    @FXML
+    private TableColumn<Bus, String> number_col;
 
     @FXML
     private TableColumn<Bus, String> jobCode_col;
@@ -153,13 +152,16 @@ public class HomeController implements Initializable, ControlledScreen {
         Callback<TableColumn<Bus, Date>, TableCell<Bus, Date>> dateCellFactory
                 = (TableColumn<Bus, Date> param) -> new DateEditingCell();
 
+        number_col.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(busTable.getItems().indexOf(p.getValue()) + ""));
+        number_col.setSortable(false);
+
         jobCode_col.setCellValueFactory(cellData -> cellData.getValue().jobCodeProperty());
         jobCode_col.setCellFactory(textFieldCellFactory);
         jobCode_col.setOnEditCommit(
                 (TableColumn.CellEditEvent<Bus, String> t) -> {
                     System.out.println("------job code update------....");
                     Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    System.out.println("_id " + bus.getId());
+                    System.out.println("uuid " + bus.getUuid());
                     String oldJobCode = bus.getJobCode();
                     System.out.println("+++job code cu: " + oldJobCode);
                     String newJobCode = t.getNewValue();
@@ -171,7 +173,7 @@ public class HomeController implements Initializable, ControlledScreen {
                                 .get(t.getTablePosition().getRow()))
                                 .setJobCode(t.getNewValue());
 
-                        Bson filters = eq("_id", bus.getId());
+                        Bson filters = eq("uuid", bus.getUuid());
                         Bson updateValue = set("jobCode", newJobCode);
 
                         updateInBackground(filters, updateValue);
@@ -198,7 +200,7 @@ public class HomeController implements Initializable, ControlledScreen {
                         ((Bus) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setBrand(t.getNewValue());
-                        Bson filters = eq("_id", bus.getId());
+                        Bson filters = eq("uuid", bus.getUuid());
                         Bson updateValue = set("brand", newBrand);
 
                         updateInBackground(filters, updateValue);
@@ -225,7 +227,7 @@ public class HomeController implements Initializable, ControlledScreen {
                                 .get(t.getTablePosition().getRow()))
                                 .setRouteNumber(t.getNewValue());
 
-                        Bson filters = eq("_id", bus.getId());
+                        Bson filters = eq("uuid", bus.getUuid());
                         Bson updateValue = set("routeNumber", newRouteNumber);
 
                         updateInBackground(filters, updateValue);
@@ -252,7 +254,7 @@ public class HomeController implements Initializable, ControlledScreen {
                         ((Bus) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setRouteName(t.getNewValue());
-                        Bson filters = eq("_id", bus.getId());
+                        Bson filters = eq("uuid", bus.getUuid());
                         Bson updateValue = set("routeName", newRouteName);
 
                         updateInBackground(filters, updateValue);
@@ -279,7 +281,7 @@ public class HomeController implements Initializable, ControlledScreen {
                         ((Bus) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setNumberPlate(t.getNewValue());
-                        Bson filters = eq("_id", bus.getId());
+                        Bson filters = eq("uuid", bus.getUuid());
                         Bson updateValue = set("numberPlate", newNumPlate);
 
                         updateInBackground(filters, updateValue);
@@ -292,48 +294,14 @@ public class HomeController implements Initializable, ControlledScreen {
 
 
         contract_col.setCellValueFactory(cellData -> cellData.getValue().contractProperty());
-
-//        contract_col.setCellFactory(p -> {
-//            CheckBox checkBox = new CheckBox();
-//            TableCell<Bus, Boolean> tableCell = new TableCell<Bus, Boolean>() {
-//
-//                @Override
-//                protected void updateItem(Boolean item, boolean empty) {
-//
-//                    super.updateItem(item, empty);
-//                    if (empty || item == null)
-//                        setGraphic(null);
-//                    else {
-//                        setGraphic(checkBox);
-//                        checkBox.setSelected(item);
-//                    }
-//                }
-//            };
-//
-//            checkBox.addEventFilter(MouseEvent.MOUSE_PRESSED, event ->
-//                    validate(checkBox, (Bus) tableCell.getTableRow().getItem(), event));
-//
-////            checkBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-////                if(event.getCode() == KeyCode.SPACE)
-////                    validate(checkBox, (Person) cell.getTableRow().getItem(), event);
-////            });
-//
-//            tableCell.setAlignment(Pos.CENTER);
-//            tableCell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-//
-//            return tableCell;
-//        });
-
-
         contract_col.setCellFactory(p -> {
             final CheckBoxTableCell<Bus, Boolean> ctCell = new CheckBoxTableCell<>();
             ctCell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
 //                validate(checkBox, (Bus) tableCell.getTableRow().getItem(), event));
-                System.out.println("**** test ****");
+                System.out.println("**** contract ****");
                 System.out.println(!ctCell.getItem());
                 Bus bus = ctCell.getTableRow().getItem();
-                System.out.println("_id: " + bus.getId() + ", job Code: " + bus.getJobCode());
-                Bson filter = eq("_id", bus.getId());
+                Bson filter = eq("uuid", bus.getUuid());
                 Bson updateValue = set("contract", !ctCell.getItem());
                 updateInBackground(filter, updateValue);
             });
@@ -365,7 +333,7 @@ public class HomeController implements Initializable, ControlledScreen {
                         ((Bus) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setStartDay(t.getNewValue());
-                        Bson filters = eq("_id", bus.getId());
+                        Bson filters = eq("uuid", bus.getUuid());
                         Bson updateValue = set("startDay", newStartDay);
 
                         updateInBackground(filters, updateValue);
@@ -392,7 +360,7 @@ public class HomeController implements Initializable, ControlledScreen {
                         ((Bus) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setEndDay(t.getNewValue());
-                        Bson filters = eq("_id", bus.getId());
+                        Bson filters = eq("uuid", bus.getUuid());
                         Bson updateValue = set("endDay", newEndDay);
 
                         updateInBackground(filters, updateValue);
@@ -419,7 +387,7 @@ public class HomeController implements Initializable, ControlledScreen {
                         ((Bus) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setNote(t.getNewValue());
-                        Bson filters = eq("_id", bus.getId());
+                        Bson filters = eq("uuid", bus.getUuid());
                         Bson updateValue = set("note", newNote);
 
                         updateInBackground(filters, updateValue);
@@ -442,10 +410,6 @@ public class HomeController implements Initializable, ControlledScreen {
                     });
                     MenuItem delelteItem = new MenuItem("Delete row");
                     delelteItem.setOnAction(event -> {
-                        //delete item
-                        //Bus selectedItem = busTable.getSelectionModel().getSelectedItem();
-                        //System.out.println(selectedItem.getId());
-                        //ObservableList<Bus> tableItems = busTable.getItems();
 
                         // needs multirowselection is set to true
                         ObservableList<Bus> readOnlyItems = busTable.getSelectionModel().getSelectedItems();
@@ -463,7 +427,13 @@ public class HomeController implements Initializable, ControlledScreen {
                     insertNewRowItem.setOnAction(event -> {
 //                        busFilteredList.setPredicate(Bus -> true);
                         refreshTable(busFilteredList);
-                        insertInBackground(new Bus());
+                        Bus bus = new Bus();
+                        insertInBackground(bus);
+                        int lastIndex = busTable.getItems().size();
+                        System.out.println("last index: " + lastIndex);
+                        busData.add(lastIndex, bus);
+                        busTable.getSelectionModel().select(lastIndex);
+                        busTable.edit(lastIndex, jobCode_col);
 //                        System.out.println("111111111111");
 
                     });
@@ -484,7 +454,13 @@ public class HomeController implements Initializable, ControlledScreen {
         insertNewRowItem.setOnAction(event -> {
 
             refreshTable(busFilteredList);
-            insertInBackground(new Bus());
+            Bus bus = new Bus();
+            insertInBackground(bus);
+            int lastIndex = busTable.getItems().size();
+            System.out.println("last index: " + lastIndex);
+            busData.add(lastIndex, bus);
+            busTable.getSelectionModel().select(lastIndex);
+            busTable.edit(lastIndex, jobCode_col);
 
         });
         tableContextMenu.getItems().add(insertNewRowItem);
@@ -573,23 +549,6 @@ public class HomeController implements Initializable, ControlledScreen {
                 busCollection.insertOne(bus);
 
                 //get last ObjectId
-                ObjectId id = bus.getId();
-                System.out.println("last ObjectId: " + id);
-                Bus bus = new Bus(id, new SimpleStringProperty("jobCode"),
-                        new SimpleStringProperty("brand"),
-                        new SimpleStringProperty("routeNumber"),
-                        new SimpleStringProperty("routeName"),
-                        new SimpleStringProperty("numberPlate"),
-                        new SimpleBooleanProperty(true),
-                        new SimpleObjectProperty<>(new Date()),
-                        new SimpleObjectProperty<>(new Date()),
-                        new SimpleStringProperty("note"));
-                int lastIndex = busTable.getItems().size();
-                System.out.println("last index: " + lastIndex);
-                busData.add(lastIndex, bus);
-                busTable.getSelectionModel().select(lastIndex);
-                busTable.edit(lastIndex, jobCode_col);
-
                 return null;
             }
 
@@ -609,6 +568,13 @@ public class HomeController implements Initializable, ControlledScreen {
 
         new Thread(task).start();
 
+    }
+
+    //generate uuid
+    private String createUUID(){
+        String uniqueID = UUID.randomUUID().toString();
+        System.out.println("uniqueID: "+uniqueID);
+        return uniqueID;
     }
 
     //update data in new Thread
