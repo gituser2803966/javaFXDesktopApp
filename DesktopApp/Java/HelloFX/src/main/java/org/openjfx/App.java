@@ -4,9 +4,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * JavaFX App
@@ -17,8 +20,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("dashboard"));
+        scene = new Scene(loadFXML("login"));
+        //stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
+        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/appIcon.png"))));
+        stage.setTitle("Login");
         stage.show();
     }
 

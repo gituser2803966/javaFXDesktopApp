@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: #eae8e8;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.UserScreenController">
+<BorderPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: #eae8e8;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.ScreenProfileController">
    <top>
       <AnchorPane cache="true" prefHeight="40.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
          <children>
@@ -65,13 +65,13 @@
                         </StackPane>
                         <VBox alignment="CENTER" cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField cache="true" maxWidth="1.7976931348623157E308" promptText="first name" style="-fx-background-color: transparent;">
+                              <TextField fx:id="firstNameTextField" cache="true" maxWidth="1.7976931348623157E308" promptText="first name" style="-fx-background-color: transparent;">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </TextField>
                               <Separator cache="true" />
-                              <TextField cache="true" maxWidth="1.7976931348623157E308" promptText="last name" style="-fx-background-color: transparent;">
+                              <TextField fx:id="lastNameTextField" cache="true" maxWidth="1.7976931348623157E308" promptText="last name" style="-fx-background-color: transparent;">
                                  <font>
                                     <Font size="14.0" />
                                  </font>

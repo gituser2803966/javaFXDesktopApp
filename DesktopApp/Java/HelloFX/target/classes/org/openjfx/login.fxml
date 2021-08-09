@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.LoginController">
+<AnchorPane fx:id="loginPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.LoginController">
     <children>
         <GridPane layoutX="118.0" layoutY="106.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="50.0">
             <columnConstraints>
@@ -26,7 +26,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label alignment="CENTER_RIGHT" text="ĐĂNG NHẬP" textAlignment="CENTER" textFill="#2d9cdb" GridPane.halignment="CENTER">
+                <Label alignment="CENTER_RIGHT" cache="true" text="ĐĂNG NHẬP" textAlignment="CENTER" textFill="#2d9cdb" GridPane.halignment="CENTER">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
