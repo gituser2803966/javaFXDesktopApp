@@ -16,15 +16,13 @@ import java.util.Objects;
  */
 public class App extends Application {
 
-    private static Scene scene;
-
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("login"));
-        //stage.initStyle(StageStyle.TRANSPARENT);
+        Scene scene = new Scene(loadFXML("login"));
+//        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
-        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/appIcon.png"))));
-        stage.setTitle("Login");
+        Image icon = new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/appIcon.png")));
+        stage.getIcons().add(icon);
         stage.show();
     }
 
@@ -33,12 +31,12 @@ public class App extends Application {
 //    }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("ui/"+fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
     public static void main(String[] args) {
-        launch(args);
+        launch();
     }
 
 }

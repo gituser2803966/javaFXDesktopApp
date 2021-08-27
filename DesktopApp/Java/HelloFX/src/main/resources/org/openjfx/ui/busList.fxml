@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="homeBorderPanel" cache="true" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controllers.BusController">
+   <center>
+        <TabPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="On Job">
+                    <content>
+                        <AnchorPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                            <children>
+                        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <center>
+                              <TableView fx:id="onJobBusTable" cache="true" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                                 <columns>
+                                    <TableColumn fx:id="onJobNo_col" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" text="STT" />
+                                    <TableColumn fx:id="onJobJobCode_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Mã hàng" />
+                                    <TableColumn fx:id="onJobBrand_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Nhãn hàng" />
+                                    <TableColumn fx:id="onJobAgency_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Agency" />
+                                    <TableColumn fx:id="onJobSlogan_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Slogan" />
+                                    <TableColumn fx:id="onJobNumberPlate_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Biển kiểm soát" />
+                                    <TableColumn fx:id="onJobRouteNumber_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Mã số tuyến" />
+                                    <TableColumn fx:id="onJobDateOfConstruction_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Ngày thi công" />
+                                    <TableColumn fx:id="onJobVehicleCategory_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Loại xe" />
+                                    <TableColumn fx:id="onJobEnterprise_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Doanh nghiệp" />
+                                    <TableColumn fx:id="onJobCs_col" minWidth="100.0" prefWidth="-1.0" text="CS" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </center>
+                           <top>
+                              <VBox prefHeight="100.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" cache="true" prefHeight="40.0" style="-fx-background-color: #3686ff;">
+                                       <children>
+                                          <ImageView fx:id="backImageView1" cache="true" fitHeight="32.0" fitWidth="32.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/back_arrow_icon_white.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Quản lí dữ liệu xe buýt" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" cache="true" prefHeight="60.0">
+                                       <children>
+                                          <Button fx:id="showAllButton1" cache="true" mnemonicParsing="false" prefHeight="30.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #3686ff; -fx-text-fill: #FFFFFF;" text="Xem tất cả">
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Button>
+                                          <TextField fx:id="searchTextField1" cache="true" onMouseExited="#setSearchTextFieldOnMouseExited" onMousePressed="#setSearchTextFieldOnMousePressed" prefHeight="30.0" prefWidth="200.0" promptText="search" style="-fx-background-color: #d6d6d6; -fx-background-radius: 5; -fx-border-radius: 5;">
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <ComboBox fx:id="routersComboBox1" cache="true" prefHeight="30.0" promptText="Chọn tuyến" style="-fx-background-color: #E5E5E5; -fx-background-radius: 5; -fx-border-radius: 5;">
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </ComboBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </top>
+                        </BorderPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Danh sách xe">
+                    <content>
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <bottom>
+                              <HBox alignment="BASELINE_LEFT" cache="true" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <HBox alignment="BASELINE_LEFT">
+                                       <children>
+                                          <Label cache="true" style="-fx-background-color: #3686ff; -fx-background-radius: 5; -fx-border-radius: 5;" text="total" textFill="WHITE">
+                                             <padding>
+                                                <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label fx:id="busTotalLabel" text="total value">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label fx:id="insideContractLabel" style="-fx-background-color: #04b034; -fx-background-radius: 5; -fx-border-radius: 5;" text="Xe đang dán quảng cáo" textFill="WHITE">
+                                             <padding>
+                                                <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" />
+                                             </padding>
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label fx:id="adsLabel" text="total value">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label fx:id="outsideContractLabel" style="-fx-background-color: #d40d0d; -fx-background-radius: 5; -fx-border-radius: 5;" text="Xe đang trống" textFill="WHITE">
+                                             <padding>
+                                                <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" />
+                                             </padding>
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label fx:id="noAdsLabel" text="total value">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="BASELINE_RIGHT" cache="true" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="insideContractLabel1" style="-fx-background-color: #04b034; -fx-background-radius: 5; -fx-border-radius: 5;" text="Trong hợp đồng" textFill="WHITE">
+                                             <padding>
+                                                <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label fx:id="insideContractLabel" text="total value">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label fx:id="outsideContractLabel1" style="-fx-background-color: #d40d0d; -fx-background-radius: 5; -fx-border-radius: 5;" text="Ngoài hợp đồng" textFill="WHITE">
+                                             <padding>
+                                                <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" />
+                                             </padding>
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label fx:id="outsideContractLabel" text="total value">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                           </bottom>
+                           <top>
+                              <VBox cache="true" prefHeight="100.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" cache="true" prefHeight="40.0" style="-fx-background-color: #3686ff;">
+                                       <children>
+                                          <ImageView fx:id="backImageView" cache="true" fitHeight="32.0" fitWidth="32.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/back_arrow_icon_white.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Quản lí dữ liệu xe buýt" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                      <HBox alignment="CENTER_LEFT" cache="true" prefHeight="60.0">
+                                          <children>
+                                              <Button fx:id="showAllButton" cache="true" mnemonicParsing="false" prefHeight="30.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #3686ff; -fx-text-fill: #FFFFFF;" text="Xem tất cả">
+                                                  <opaqueInsets>
+                                                      <Insets />
+                                                  </opaqueInsets>
+                                                  <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                  </HBox.margin>
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                              </Button>
+                                              <TextField fx:id="searchTextField" cache="true" onMouseExited="#setSearchTextFieldOnMouseExited" onMousePressed="#setSearchTextFieldOnMousePressed" prefHeight="30.0" prefWidth="200.0" promptText="search" style="-fx-background-color: #d6d6d6; -fx-background-radius: 5; -fx-border-radius: 5;">
+                                                  <HBox.margin>
+                                                      <Insets left="20.0" />
+                                                  </HBox.margin>
+                                              </TextField>
+                                              <ComboBox fx:id="routersComboBox" cache="true" prefHeight="30.0" promptText="Chọn tuyến" style="-fx-background-color: #E5E5E5; -fx-background-radius: 5; -fx-border-radius: 5;">
+                                                  <HBox.margin>
+                                                      <Insets left="20.0" />
+                                                  </HBox.margin>
+                                              </ComboBox>
+                                          </children>
+                                      </HBox>
+                                 </children>
+                              </VBox>
+                           </top>
+                           <center>
+                                      <TableView fx:id="busTable" cache="true" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                                          <columns>
+                                    <TableColumn fx:id="no_col" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" text="STT" />
+                                    <TableColumn fx:id="enterprise_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Doanh nghiệp" />
+                                    <TableColumn fx:id="parkingLot_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Bãi xe" />
+                                              <TableColumn fx:id="routeNumber_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Mã số tuyến" />
+                                    <TableColumn fx:id="numberPlate_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Biển kiểm soát" />
+                                    <TableColumn fx:id="vehicleCategory_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Loại xe" />
+                                    <TableColumn fx:id="status_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Hiện trạng" />
+                                    <TableColumn fx:id="dateOfConstruction_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Ngày thi công" />
+                                              <TableColumn fx:id="jobCode_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Mã hàng" />
+                                    <TableColumn fx:id="agency_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Agency" />
+                                              <TableColumn fx:id="brand_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Nhãn hàng" />
+                                    <TableColumn fx:id="slogan_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Slogan" />
+                                    <TableColumn fx:id="duration_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Thời hạn hợp đồng" />
+                                    <TableColumn fx:id="constructionTeam_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Đội thi công" />
+                                    <TableColumn fx:id="printAndSupplier_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="In - Quy cách" />
+                                    <TableColumn fx:id="description_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Mô tả" />
+                                    <TableColumn fx:id="cs_col" minWidth="120.0" prefWidth="-1.0" text="CS" />
+                                              <TableColumn fx:id="startDay_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Ngày bắt đầu" />
+                                              <TableColumn fx:id="endDay_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Ngày kết thúc" />
+                                    <TableColumn fx:id="remainingDay_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Thời hạn (Ngày)" />
+                                              <TableColumn fx:id="contract_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Hợp đồng" />
+                                              <TableColumn fx:id="note_col" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Ghi chú" />
+                                          </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                      </TableView>
+                           </center>
+                        </BorderPane>
+                     </children></AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+   </center>
+</BorderPane>

@@ -4,11 +4,14 @@ module org.openjfx {
     requires org.mongodb.driver.core;
     requires org.mongodb.driver.sync.client;
     requires org.mongodb.bson;
-    requires org.kordamp.ikonli.core;
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.ikonli.ionicons4;
 
     opens org.openjfx to javafx.fxml;
     exports org.openjfx;
+    exports org.openjfx.util;
+    opens org.openjfx.util to javafx.fxml;
+    exports org.openjfx.controllers;
+    opens org.openjfx.controllers to javafx.fxml;
+    exports org.openjfx.models;
+    opens org.openjfx.models to javafx.fxml;
 
 }

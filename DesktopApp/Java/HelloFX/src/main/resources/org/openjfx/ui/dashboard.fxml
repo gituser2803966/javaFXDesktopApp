@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainBorderPane" cache="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controllers.DashBoardController">
+    <left>
+        <AnchorPane fx:id="sideBarAnchorPane" cache="true" prefWidth="200.0" style="-fx-background-color: #E5E5E5;" BorderPane.alignment="CENTER">
+            <children>
+                <VBox fx:id="sideBarVBox" prefHeight="800.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <HBox fx:id="homeHBox" alignment="CENTER_LEFT" cache="true" maxWidth="1.7976931348623157E308" onMouseEntered="#homeHBoxOnMouseEntered" onMouseExited="#homeHBoxOnMouseExited" prefHeight="60.0">
+                            <children>
+                        <ImageView cache="true" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/home_icon.png" />
+                           </image>
+                        </ImageView>
+                                <Label alignment="CENTER" text="Home">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                                </Label>
+                            </children>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                        </HBox>
+                  <Separator cache="true" prefWidth="200.0" style="-fx-background-color: #ffffff;" />
+                        <VBox cache="true">
+                            <children>
+                                <Button fx:id="dataButton" alignment="BASELINE_LEFT" cache="true" mnemonicParsing="false" onMouseEntered="#dataButtonOnMouseEntered" onMouseExited="#dataButtonOnMouseExited" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: transparent;" text=" Data" wrapText="true">
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                    <VBox.margin>
+                                        <Insets left="5.0" right="5.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                           <graphic>
+                              <ImageView cache="true" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/data_icon.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                           </graphic>
+
+                                </Button>
+                                <Button fx:id="chartButton" alignment="BASELINE_LEFT" cache="true" mnemonicParsing="false" onMouseEntered="#chartButtonOnMouseEntered" onMouseExited="#chartButtonOnMouseExited" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Biểu đồ" wrapText="true">
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                    <VBox.margin>
+                                        <Insets left="5.0" right="5.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/bar_chart_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+
+                                </Button>
+                                <Button fx:id="reportButton" alignment="BASELINE_LEFT" cache="true" mnemonicParsing="false" onMouseEntered="#reportButtonOnMouseEntered" onMouseExited="#reportButtonOnMouseExited" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Báo cáo" wrapText="true">
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                    <VBox.margin>
+                                        <Insets left="5.0" right="5.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/report_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+
+
+                                </Button>
+                        <Button fx:id="adminButton" alignment="BASELINE_LEFT" cache="true" mnemonicParsing="false" onMouseEntered="#adminButtonOnMouseEntered" onMouseExited="#adminButtonOnMouseExited" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Admin">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </VBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/manager_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                            </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                        </VBox>
+                    </children>
+                </VBox>
+                <HBox fx:id="userHBox" alignment="CENTER_LEFT" layoutY="600.0" onMouseEntered="#userHBoxOnMouseEntered" onMouseExited="#userHBoxOnMouseExited" prefHeight="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <ImageView cache="true" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                            <image>
+                                <Image url="@../images/male-user-60.png" />
+                            </image>
+                        </ImageView>
+                        <Label fx:id="userNameLabel" text="user label">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <AnchorPane fx:id="centerAnchorPane" BorderPane.alignment="CENTER" />
+    </center>
+</BorderPane>
