@@ -1109,31 +1109,32 @@ public class BusController implements Initializable, ControlledScreen {
                         ObservableList<Bus> target =
                                 busData.stream()
                                         .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
-                                        .collect(Collectors.collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
+                                        .collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
 
-                        //cập nhật lại ngày thi công cho bảng bus list theo biển số xe của bus on job
-                        Date onJobCurrentDate = t.getTableView().getItems()
-                                .get(t.getTablePosition().getRow()).getOnJobDateOfConstruction();
-                        target.get(0).setDateOfConstruction(onJobCurrentDate);
-
-
-                        //tự động cập nhật tuyến xe nếu nhập đúng biển số xe
-                        Integer busRoute = target.get(0).getRouteNumber();
-                        ojBus.setOnJobRouteNumber(busRoute);
-
-                        //tự động cập nhật loại xe
-                        String busVehicleCategory = target.get(0).getVehicleCategory();
-                        ojBus.setOnJobVehicleCategory(busVehicleCategory);
-                        //tự động cập nhật doanh nghiệp
-                        String busEnterprise = target.get(0).getEnterprise();
-                        ojBus.setOnJobEnterprise(busEnterprise);
-
-                        //cập nhật lại số tuyến, doanh nghiệp, loại xe
-                        Bson updateMultipleValue = combine(set("onJobNumberPlate", newValue), set("onJobRouteNumber", busRoute),
-                                set("onJobEnterprise", busEnterprise),
-                                set("onJobVehicleCategory", busVehicleCategory));
 
                         if (target.size() > 0) {
+                            // cập nhật lại ngày thi công cho bảng bus list
+                            //cập nhật lại ngày thi công cho bảng bus list theo biển số xe của bus on job
+                            Date onJobCurrentDate = t.getTableView().getItems()
+                                    .get(t.getTablePosition().getRow()).getOnJobDateOfConstruction();
+                            target.get(0).setDateOfConstruction(onJobCurrentDate);
+
+                            //tự động cập nhật tuyến xe nếu nhập đúng biển số xe
+                            Integer busRoute = target.get(0).getRouteNumber();
+                            ojBus.setOnJobRouteNumber(busRoute);
+
+                            //tự động cập nhật loại xe
+                            String busVehicleCategory = target.get(0).getVehicleCategory();
+                            ojBus.setOnJobVehicleCategory(busVehicleCategory);
+                            //tự động cập nhật doanh nghiệp
+                            String busEnterprise = target.get(0).getEnterprise();
+                            ojBus.setOnJobEnterprise(busEnterprise);
+
+                            //cập nhật lại số tuyến, doanh nghiệp, loại xe
+                            Bson updateMultipleValue = combine(set("onJobNumberPlate", newValue), set("onJobRouteNumber", busRoute),
+                                    set("onJobEnterprise", busEnterprise),
+                                    set("onJobVehicleCategory", busVehicleCategory));
+
                             System.out.println("update multiple");
                             updateOnJobBus(filters, updateMultipleValue);
                         } else {

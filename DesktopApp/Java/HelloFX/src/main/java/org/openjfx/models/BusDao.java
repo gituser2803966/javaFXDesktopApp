@@ -9,4 +9,5 @@ public interface BusDao {
     public Bus getBus(int id);
     public ObservableList<Bus> getBusList();
     public long update(Bson filter, Bson value);
+    public long count();
 }

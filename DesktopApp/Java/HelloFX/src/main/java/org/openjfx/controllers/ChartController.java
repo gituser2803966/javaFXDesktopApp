@@ -33,37 +33,7 @@ public class ChartController implements Initializable, ControlledScreen {
 
     ScreensController myController;
 
-
-    ObservableList<Statistic> statisticData = FXCollections.observableArrayList(
-            new Statistic(new SimpleIntegerProperty(2021),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(2020),
-                    new SimpleIntegerProperty(2020),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10)),
-            new Statistic(new SimpleIntegerProperty(2022),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(2020),
-                    new SimpleIntegerProperty(2020),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10),
-                    new SimpleIntegerProperty(10))
-
-    );
-
+    ObservableList<Statistic> statisticData = FXCollections.observableArrayList();
 
 
     @FXML
@@ -96,7 +66,14 @@ public class ChartController implements Initializable, ControlledScreen {
     @FXML
     private TableColumn<Statistic, Number> dec_col;
 
+
+    @FXML
+    private ComboBox<Integer> yearsComboBox;
     private static ObservableList<Integer> comboBoxYearData = FXCollections.observableArrayList();
+
+    @FXML
+    private ComboBox<Integer> routeComboBox;
+    private static ObservableList<Integer> comboBoxRouteData = FXCollections.observableArrayList();
 
     @FXML
     private Button buttonRefresh;
@@ -119,62 +96,125 @@ public class ChartController implements Initializable, ControlledScreen {
     private LineChart<String, Number> monthLineChart;
 
     @FXML
-    private ComboBox<Integer> yearsComboBox;
-
-    @FXML
     private ComboBox<EMonth> monthsComboBox;
 
 
-    private ObservableList<Integer> getComboBoxYearData(ObservableList<OnJobBus> oJBus){
+    private ObservableList<Integer> getComboBoxYearData(ObservableList<OnJobBus> oJBus) {
 
-        yearsComboBox.getItems().clear();
         comboBoxYearData.clear();
-
         ObservableList<OnJobBus> a = removeOnJobBusDuplicateByYear(oJBus);
 
-        a.forEach(b->
+        a.forEach(b ->
                 comboBoxYearData.add(Integer.valueOf(getYearFromDate(b.getOnJobDateOfConstruction())))
-                );
+        );
 
         return comboBoxYearData;
     }
 
-    private ObservableList<OnJobBus> removeOnJobBusDuplicateByYear(ObservableList<OnJobBus> list) {
 
-        yearsComboBox.getItems().clear();
-        comboBoxYearData.clear();
+    private ObservableList<Integer> getComboBoxRouteNumberData(ObservableList<OnJobBus> oJBus) {
+
+        comboBoxRouteData.clear();
+        ObservableList<OnJobBus> a = removeOnJobBusDuplicateByRouteNumber(oJBus);
+
+        a.forEach(b ->
+                comboBoxRouteData.add(b.getOnJobRouteNumber())
+        );
+
+        return comboBoxRouteData;
+    }
+
+    private ObservableList<OnJobBus> removeOnJobBusDuplicateByYear(ObservableList<OnJobBus> list) {
 
         Set<Integer> nameSet = new HashSet<>();
 
-        ObservableList<OnJobBus> employeesDistinctByName = list.stream()
+        ObservableList<OnJobBus> onJobBusDistinctByYear = list.stream()
                 .filter(e -> nameSet.add(getYearFromDate(e.getOnJobDateOfConstruction())))
-                .collect(Collectors.collectingAndThen(toList(),FXCollections::observableArrayList));
 
-        return employeesDistinctByName;
+                .collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
+
+        onJobBusDistinctByYear.sort((b, a) -> Integer.compare(getYearFromDate(a.getOnJobDateOfConstruction()), getYearFromDate(b.getOnJobDateOfConstruction())));
+
+        return onJobBusDistinctByYear;
+    }
+
+    private ObservableList<OnJobBus> removeOnJobBusDuplicateByRouteNumber(ObservableList<OnJobBus> list) {
+
+        Set<Integer> nameSet = new HashSet<>();
+
+        ObservableList<OnJobBus> onJobBusDistinctByRouteNumber = list.stream()
+                .filter(e -> nameSet.add(e.getOnJobRouteNumber()))
+
+                .collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
+
+        onJobBusDistinctByRouteNumber.sort((b, a) -> Integer.compare(a.getOnJobRouteNumber(), b.getOnJobRouteNumber()));
+
+        return onJobBusDistinctByRouteNumber;
+    }
+
+    private ObservableList<OnJobBus> removeOnJobBusDuplicateByRoute(ObservableList<OnJobBus> list) {
+
+        Set<Integer> nameSet = new HashSet<>();
+
+        ObservableList<OnJobBus> onJobBusDistinctByRoute = list.stream()
+                .filter(e -> nameSet.add(getYearFromDate(e.getOnJobDateOfConstruction())))
+
+                .collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
+
+        onJobBusDistinctByRoute.sort((b, a) -> Integer.compare(getYearFromDate(a.getOnJobDateOfConstruction()), getYearFromDate(b.getOnJobDateOfConstruction())));
+
+        return onJobBusDistinctByRoute;
     }
 
     public void initData(ObservableList<OnJobBus> list) {
+
         onJobBusList = list;
         return;
     }
 
+
+    public ObservableList<Statistic> getDataForTable(ObservableList<OnJobBus> ojBus) {
+
+        ObservableList<OnJobBus> oj = removeOnJobBusDuplicateByYear(ojBus);
+
+        int year = getYearFromDate(new Date());
+        statisticData.add(new Statistic(
+                new SimpleIntegerProperty(getYearFromDate(new Date())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 1).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 2).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 3).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 4).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 5).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 6).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 7).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 8).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 9).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 10).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 11).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 12).count()))
+        ));
+
+        return statisticData;
+    }
+
     //    private initD
     private void initDataTableForYear() {
-        year_col.setCellValueFactory(cellData->cellData.getValue().yearProperty());
-        feb_col.setCellValueFactory(cellData->cellData.getValue().numberOfFebProperty());
-        jan_col.setCellValueFactory(cellData->cellData.getValue().numberOfJanProperty());
-        mar_col.setCellValueFactory(cellData->cellData.getValue().numberOfMarProperty());
-        apr_col.setCellValueFactory(cellData->cellData.getValue().numberOfAprProperty());
-        may_col.setCellValueFactory(cellData->cellData.getValue().numberOfMayProperty());
-        jun_col.setCellValueFactory(cellData->cellData.getValue().numberOfJunProperty());
-        jul_col.setCellValueFactory(cellData->cellData.getValue().numberOfJulProperty());
-        aug_col.setCellValueFactory(cellData->cellData.getValue().numberOfAugProperty());
-        sep_col.setCellValueFactory(cellData->cellData.getValue().numberOfSepProperty());
-        oct_col.setCellValueFactory(cellData->cellData.getValue().numberOfOctProperty());
-        nov_col.setCellValueFactory(cellData->cellData.getValue().numberOfNovProperty());
-        dec_col.setCellValueFactory(cellData->cellData.getValue().numberOfDecProperty());
 
-        chartTable.setItems(statisticData);
+        year_col.setCellValueFactory(cellData -> cellData.getValue().yearProperty());
+        feb_col.setCellValueFactory(cellData -> cellData.getValue().numberOfFebProperty());
+        jan_col.setCellValueFactory(cellData -> cellData.getValue().numberOfJanProperty());
+        mar_col.setCellValueFactory(cellData -> cellData.getValue().numberOfMarProperty());
+        apr_col.setCellValueFactory(cellData -> cellData.getValue().numberOfAprProperty());
+        may_col.setCellValueFactory(cellData -> cellData.getValue().numberOfMayProperty());
+        jun_col.setCellValueFactory(cellData -> cellData.getValue().numberOfJunProperty());
+        jul_col.setCellValueFactory(cellData -> cellData.getValue().numberOfJulProperty());
+        aug_col.setCellValueFactory(cellData -> cellData.getValue().numberOfAugProperty());
+        sep_col.setCellValueFactory(cellData -> cellData.getValue().numberOfSepProperty());
+        oct_col.setCellValueFactory(cellData -> cellData.getValue().numberOfOctProperty());
+        nov_col.setCellValueFactory(cellData -> cellData.getValue().numberOfNovProperty());
+        dec_col.setCellValueFactory(cellData -> cellData.getValue().numberOfDecProperty());
+
+        chartTable.setItems(getDataForTable(onJobBusList));
     }
 
     private int getMonthFromDate(Date date) {
@@ -279,16 +319,18 @@ public class ChartController implements Initializable, ControlledScreen {
 //        });
     }
 
-    private int countNumberByYear(){
+    private int countNumberByYear() {
         return 1;
     }
 
 
     public void setYearBarChart(ObservableList<OnJobBus> newOnJobBusList, int year) {
 
+//        yearBarChart.setTitle("THỐNG KÊ SỐ LƯỢNG XE DÁN MỚI QUA TỪNG THÁNG THEO NĂM");
+
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName(String.valueOf(year));
-        yearBarChart.setTitle("NĂM " + year);
+
 
         ObservableList<OnJobBus> newList =
                 newOnJobBusList.stream()
@@ -350,35 +392,69 @@ public class ChartController implements Initializable, ControlledScreen {
 
         System.out.println("chart Controller");
 
-        //khởi tạo dữ liệu theo năm hiện tại
         setYearBarChart(onJobBusList, getYearFromDate(new Date()));
         initDataTableForYear();
 
-        yearsComboBox.getItems().addAll(getComboBoxYearData(onJobBusList));
-        //khởi tạo data cho MONTH comboBox
-//        monthsComboBox.setItems(FXCollections.observableArrayList(EMonth.values()));
-//        monthsComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-////          //
-//        });
-//        yearsComboBox.getItems().addAll(comboBoxYearData);
-        yearsComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        routeComboBox.getItems().addAll(getComboBoxRouteNumberData(onJobBusList));
 
+        yearsComboBox.getItems().addAll(getComboBoxYearData(onJobBusList));
+
+        yearsComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 setYearBarChart(onJobBusList, newValue);
+                changeNewPasteDataByYear(onJobBusList, newValue);
             }
-
         });
 
         //
         buttonRefresh.setOnAction(event -> {
-
-            yearsComboBox.getSelectionModel().clearSelection();
-            yearsComboBox.getItems().addAll(getComboBoxYearData(onJobBusList));
-            yearsComboBox.getSelectionModel().select(Integer.valueOf(getYearFromDate(new Date())));
+            refreshComboBoxYear();
+            refreshComboBoxRouteNumber();
             yearBarChart.getData().clear();
             setYearBarChart(onJobBusList, getYearFromDate(new Date()));
-
+            refreshPasteDataByYear();
+            chartTable.getItems().clear();
+            initDataTableForYear();
         });
+    }
+
+    private void refreshPasteDataByYear() {
+        chartTable.getItems().clear();
+        changeNewPasteDataByYear(onJobBusList, getYearFromDate(new Date()));
+    }
+
+    //thay đổi data table
+    private void changeNewPasteDataByYear(ObservableList<OnJobBus> onJobBusList, int year) {
+
+        Statistic statistic = new Statistic(
+                new SimpleIntegerProperty(year),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 1).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 2).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 3).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 4).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 5).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 6).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 7).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 8).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 9).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 10).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 11).count())),
+                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 12).count()))
+        );
+
+        chartTable.getItems().add(statistic);
+    }
+
+    private void refreshComboBoxYear() {
+        yearsComboBox.getItems().clear();
+        yearsComboBox.getItems().addAll(getComboBoxYearData(onJobBusList));
+        yearsComboBox.getSelectionModel().select(Integer.valueOf(getYearFromDate(new Date())));
+    }
+
+    private void refreshComboBoxRouteNumber() {
+        routeComboBox.getItems().clear();
+        routeComboBox.getItems().addAll(getComboBoxRouteNumberData(onJobBusList));
+//        routeComboBox.getSelectionModel().select(Integer.valueOf(getYearFromDate(new Date())));
     }
 
     @Override

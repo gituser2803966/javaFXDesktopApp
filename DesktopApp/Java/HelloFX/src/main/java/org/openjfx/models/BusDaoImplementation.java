@@ -55,6 +55,11 @@ public class BusDaoImplementation implements BusDao{
         return  result.getModifiedCount();
     }
 
+    @Override
+    public long count() {
+        return busCollection.countDocuments();
+    }
+
     public DistinctIterable<String> getOnlyRoute(){
         DistinctIterable<String> iterable = (DistinctIterable<String>) mgDB.getCollection("bus", Bus.class).distinct("routeNumber", String.class);
         return iterable;
