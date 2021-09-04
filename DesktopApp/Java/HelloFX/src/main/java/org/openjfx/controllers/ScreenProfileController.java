@@ -39,7 +39,7 @@ public class ScreenProfileController implements Initializable, ControlledScreen 
     public void logOut(ActionEvent event) throws IOException {
 
         myController.unloadScreen(DashBoardController.screenAdminID);
-        myController.unloadScreen(DashBoardController.screenBusListID);
+        myController.unloadScreen(DashBoardController.screenDataID);
         myController.unloadScreen(DashBoardController.screenChartID);
         myController.unloadScreen(DashBoardController.screenReportID);
         myController.unloadScreen(DashBoardController.screenUserProfileID);
@@ -79,6 +79,7 @@ public class ScreenProfileController implements Initializable, ControlledScreen 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         displayUserInfo();
     }
 

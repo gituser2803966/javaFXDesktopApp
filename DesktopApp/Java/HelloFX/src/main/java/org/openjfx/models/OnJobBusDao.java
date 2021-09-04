@@ -9,4 +9,5 @@ public interface OnJobBusDao {
     public OnJobBusDao getBus(int id);
     public ObservableList<OnJobBus> getOnJobBusList();
     public long update(Bson filter, Bson value);
+    public void addNewFieldToDocument(String fieldName);
 }

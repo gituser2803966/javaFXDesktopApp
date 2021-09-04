@@ -21,7 +21,7 @@
    <center>
         <TabPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
-                <Tab text="On Job">
+                <Tab text="DATA">
                     <content>
                         <AnchorPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                             <children>
@@ -32,11 +32,13 @@
                                     <TableColumn fx:id="onJobNo_col" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" text="STT" />
                                     <TableColumn fx:id="onJobJobCode_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Mã hàng" />
                                     <TableColumn fx:id="onJobBrand_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Nhãn hàng" />
-                                    <TableColumn fx:id="onJobAgency_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Agency" />
+                                    <TableColumn fx:id="onJobConstructionContent_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Nội dung thi công" />
                                     <TableColumn fx:id="onJobSlogan_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Slogan" />
+                                    <TableColumn fx:id="onJobAgency_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Agency" />
                                     <TableColumn fx:id="onJobNumberPlate_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Biển kiểm soát" />
                                     <TableColumn fx:id="onJobRouteNumber_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Mã số tuyến" />
                                     <TableColumn fx:id="onJobDateOfConstruction_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Ngày thi công" />
+                                    <TableColumn fx:id="onJobDateOfConstruction_col1" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Ngày hết hạn" />
                                     <TableColumn fx:id="onJobVehicleCategory_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Loại xe" />
                                     <TableColumn fx:id="onJobEnterprise_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Doanh nghiệp" />
                                     <TableColumn fx:id="onJobCs_col" minWidth="100.0" prefWidth="-1.0" text="CS" />
@@ -51,7 +53,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" cache="true" prefHeight="40.0" style="-fx-background-color: #3686ff;">
                                        <children>
-                                          <ImageView fx:id="backImageView1" cache="true" fitHeight="32.0" fitWidth="32.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="backImageView1" cache="true" fitHeight="24.0" fitWidth="24.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/back_arrow_icon_white.png" />
                                              </image>
@@ -102,7 +104,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab text="Danh sách xe">
+                <Tab text="Danh sách">
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>
@@ -194,7 +196,7 @@
                                  <children>
                                     <HBox alignment="CENTER_LEFT" cache="true" prefHeight="40.0" style="-fx-background-color: #3686ff;">
                                        <children>
-                                          <ImageView fx:id="backImageView" cache="true" fitHeight="32.0" fitWidth="32.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="backImageView" cache="true" fitHeight="24.0" fitWidth="24.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/back_arrow_icon_white.png" />
                                              </image>

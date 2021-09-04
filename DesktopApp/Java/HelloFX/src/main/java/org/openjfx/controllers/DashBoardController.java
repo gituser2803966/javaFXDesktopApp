@@ -19,8 +19,8 @@ public class DashBoardController implements Initializable, ControlledScreen {
     public static String screenNavigationID = "navigation";
     public static String screenNavigationFile = "ui/navigation.fxml";
 
-    public static String screenBusListID = "busList";
-    public static String screenBusListFile = "ui/busList.fxml";
+    public static String screenDataID = "data";
+    public static String screenDataFile = "ui/data.fxml";
 
     public static String screenChartID = "chart";
     public static String screenChartFile = "ui/chart.fxml";
@@ -37,10 +37,13 @@ public class DashBoardController implements Initializable, ControlledScreen {
     static EmployeeHolder employeeHolder = EmployeeHolder.getInstance();
 
     @FXML
-    private HBox homeHBox;
+    private AnchorPane sideBarAnchorPane;
 
     @FXML
-    private Label userNameLabel;
+    private HBox homeHBox;
+
+//    @FXML
+//    private Label userNameLabel;
 
     @FXML
     private Button dataButton;
@@ -147,10 +150,9 @@ public class DashBoardController implements Initializable, ControlledScreen {
         if (employee != null) {
             String firstName = employee.getFirstName();
             String lastName = employee.getLastName();
-            userNameLabel.setText(firstName + " " + lastName);
-        } else {
-            userNameLabel.setText("label");
+//            userNameLabel.setText(firstName + " " + lastName);
         }
+
     }
 
     private boolean checkIsAdmin() {
@@ -167,6 +169,9 @@ public class DashBoardController implements Initializable, ControlledScreen {
 
         System.out.println("dashboard controller running ...");
 
+//        sideBarAnchorPane.setTranslateX(-200);
+//        sideBarAnchorPane.setVisible(false);
+
         //cho phép ẩn hoặc hiện chức năng của riêng admin
         if(checkIsAdmin()){
             adminButton.setVisible(true);
@@ -181,7 +186,7 @@ public class DashBoardController implements Initializable, ControlledScreen {
         myController = new ScreensController();
 
         myController.loadScreens(DashBoardController.screenNavigationID, DashBoardController.screenNavigationFile);
-        myController.loadScreens(DashBoardController.screenBusListID, DashBoardController.screenBusListFile);
+        myController.loadScreens(DashBoardController.screenDataID, DashBoardController.screenDataFile);
         myController.loadScreens(DashBoardController.screenChartID, DashBoardController.screenChartFile);
         myController.loadScreens(DashBoardController.screenReportID, DashBoardController.screenReportFile);
         myController.loadScreens(DashBoardController.screenAdminID, DashBoardController.screenAdminFile);
@@ -196,7 +201,7 @@ public class DashBoardController implements Initializable, ControlledScreen {
         //
         dataButton.setOnAction(event -> {
             //mainController.setScreen(DashBoardController.screenHomeID);
-            mainBorderPane.setCenter(myController.getScreen(DashBoardController.screenBusListID));
+            mainBorderPane.setCenter(myController.getScreen(DashBoardController.screenDataID));
         });
 
         //

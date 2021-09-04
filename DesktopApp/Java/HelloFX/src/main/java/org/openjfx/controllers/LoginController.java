@@ -1,7 +1,9 @@
 package org.openjfx.controllers;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -13,6 +15,7 @@ import com.mongodb.client.model.Indexes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,7 +27,7 @@ import org.openjfx.models.EmployeeHolder;
 import org.openjfx.service.MongoDBConnection;
 import org.openjfx.util.MD5Hashing;
 
-public class LoginController {
+public class LoginController implements Initializable {
 
     static Stage stage;
 
@@ -102,4 +105,9 @@ public class LoginController {
 
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        usernameTextField.setStyle("-fx-background-color: #57534E;"+"-fx-text-inner-color: #fff;");
+        passwordTextField.setStyle("-fx-background-color: #57534E;"+"-fx-text-inner-color: #fff;");
+    }
 }

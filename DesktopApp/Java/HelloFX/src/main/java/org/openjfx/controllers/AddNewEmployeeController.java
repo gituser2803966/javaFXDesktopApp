@@ -257,18 +257,18 @@ public class AddNewEmployeeController implements Initializable, ControlledScreen
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        labelNotification.setVisible(false);
-        progressIndicator.setVisible(false);
-        progressIndicator.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
-        departmentComboBox.setItems(FXCollections.observableArrayList(EDepartment.values()));
-        departmentComboBox.getSelectionModel().selectFirst();
-        departmentComboBox.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> System.out.println("Value is: " + newValue));
-
-        ruleComboBox.setItems(FXCollections.observableArrayList(ERule.values()));
-        ruleComboBox.getSelectionModel().selectFirst();
-        ruleComboBox.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> System.out.println("Value is: " + newValue));
+//        labelNotification.setVisible(false);
+//        progressIndicator.setVisible(false);
+//        progressIndicator.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+//        departmentComboBox.setItems(FXCollections.observableArrayList(EDepartment.values()));
+//        departmentComboBox.getSelectionModel().selectFirst();
+//        departmentComboBox.getSelectionModel().selectedItemProperty()
+//                .addListener((observable, oldValue, newValue) -> System.out.println("Value is: " + newValue));
+//
+//        ruleComboBox.setItems(FXCollections.observableArrayList(ERule.values()));
+//        ruleComboBox.getSelectionModel().selectFirst();
+//        ruleComboBox.getSelectionModel().selectedItemProperty()
+//                .addListener((observable, oldValue, newValue) -> System.out.println("Value is: " + newValue));
     }
 
     @Override

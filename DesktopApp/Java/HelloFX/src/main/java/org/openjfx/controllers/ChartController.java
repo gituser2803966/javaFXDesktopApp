@@ -1,7 +1,8 @@
 package org.openjfx.controllers;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -18,7 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import org.openjfx.models.EMonth;
 import org.openjfx.models.OnJobBus;
-import org.openjfx.models.Statistic;
+import org.openjfx.models.IntegratedStatistic;
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -33,39 +34,29 @@ public class ChartController implements Initializable, ControlledScreen {
 
     ScreensController myController;
 
-    ObservableList<Statistic> statisticData = FXCollections.observableArrayList();
-
-
-    @FXML
-    private TableView<Statistic> chartTable;
+    ObservableList<IntegratedStatistic> statisticDataTable = FXCollections.observableArrayList();
 
     @FXML
-    private TableColumn<Statistic, Number> year_col;
-    @FXML
-    private TableColumn<Statistic, Number> jan_col;
-    @FXML
-    private TableColumn<Statistic, Number> feb_col;
-    @FXML
-    private TableColumn<Statistic, Number> mar_col;
-    @FXML
-    private TableColumn<Statistic, Number> apr_col;
-    @FXML
-    private TableColumn<Statistic, Number> may_col;
-    @FXML
-    private TableColumn<Statistic, Number> jun_col;
-    @FXML
-    private TableColumn<Statistic, Number> jul_col;
-    @FXML
-    private TableColumn<Statistic, Number> aug_col;
-    @FXML
-    private TableColumn<Statistic, Number> sep_col;
-    @FXML
-    private TableColumn<Statistic, Number> oct_col;
-    @FXML
-    private TableColumn<Statistic, Number> nov_col;
-    @FXML
-    private TableColumn<Statistic, Number> dec_col;
+    private TableView<IntegratedStatistic> integratedStatisticTableView;
 
+    @FXML
+    private TableColumn<IntegratedStatistic, String> no_col;
+    @FXML
+    private TableColumn<IntegratedStatistic, String> year_col;
+    @FXML
+    private TableColumn<IntegratedStatistic, String> month_col;
+    @FXML
+    private TableColumn<IntegratedStatistic, Number> reNew_col;
+    @FXML
+    private TableColumn<IntegratedStatistic, Number> changeLayout_col;
+    @FXML
+    private TableColumn<IntegratedStatistic, Number> incurred_col;
+    @FXML
+    private TableColumn<IntegratedStatistic, Number> dismantling_col;
+    @FXML
+    private TableColumn<IntegratedStatistic, Number> repair_col;
+    @FXML
+    private TableColumn<IntegratedStatistic, Number> total_col;
 
     @FXML
     private ComboBox<Integer> yearsComboBox;
@@ -74,6 +65,10 @@ public class ChartController implements Initializable, ControlledScreen {
     @FXML
     private ComboBox<Integer> routeComboBox;
     private static ObservableList<Integer> comboBoxRouteData = FXCollections.observableArrayList();
+
+    @FXML
+    private ComboBox<String> optionComboBox;
+    private static ObservableList<String> comboBoxOptionData = FXCollections.observableArrayList("Dán mới", "Sữa chữa");
 
     @FXML
     private Button buttonRefresh;
@@ -90,21 +85,22 @@ public class ChartController implements Initializable, ControlledScreen {
     private static ObservableList<OnJobBus> onJobBusList = FXCollections.observableArrayList();
 
     @FXML
-    private BarChart<String, Number> yearBarChart;
+    private BarChart<String, Number> optionBarChart;
 
     @FXML
     private LineChart<String, Number> monthLineChart;
 
+    final String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
     @FXML
     private ComboBox<EMonth> monthsComboBox;
-
 
     private ObservableList<Integer> getComboBoxYearData(ObservableList<OnJobBus> oJBus) {
 
         comboBoxYearData.clear();
-        ObservableList<OnJobBus> a = removeOnJobBusDuplicateByYear(oJBus);
+        ObservableList<OnJobBus> years = removeOnJobBusDuplicateByYear(oJBus);
 
-        a.forEach(b ->
+        years.forEach(b ->
                 comboBoxYearData.add(Integer.valueOf(getYearFromDate(b.getOnJobDateOfConstruction())))
         );
 
@@ -172,49 +168,69 @@ public class ChartController implements Initializable, ControlledScreen {
         return;
     }
 
+    private int countBy(int year, int month, String value) {
 
-    public ObservableList<Statistic> getDataForTable(ObservableList<OnJobBus> ojBus) {
+        int result = Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == month &&
+                b.getOnJobConstructionContent().equals(value)).count());
+
+        return result;
+    }
+
+
+    public ObservableList<IntegratedStatistic> getTableDataForIntegrateStatistic(ObservableList<OnJobBus> ojBus) {
 
         ObservableList<OnJobBus> oj = removeOnJobBusDuplicateByYear(ojBus);
 
         int year = getYearFromDate(new Date());
-        statisticData.add(new Statistic(
-                new SimpleIntegerProperty(getYearFromDate(new Date())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 1).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 2).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 3).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 4).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 5).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 6).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 7).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 8).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 9).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 10).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 11).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) ojBus.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 12).count()))
-        ));
 
-        return statisticData;
+        int i = 0;
+        for (i = 1; i <= months.length; i++) {
+
+            IntegratedStatistic integratedStatistic = new IntegratedStatistic();
+            integratedStatistic.setYear(String.valueOf(year));
+            integratedStatistic.setMonth(String.valueOf(months[i - 1]));
+            integratedStatistic.setNumberOfReNew(countBy(year, i, "DanMoi"));
+            integratedStatistic.setNumberOfChangeLayout(countBy(year, i, "ThayLayout"));
+            integratedStatistic.setNumberOfIncurred(countBy(year, i, "PhatSinh"));
+            integratedStatistic.setNumberOfDismantling(countBy(year, i, "ThaoDo"));
+            integratedStatistic.setNumberOfRepair(countBy(year, i, "SuaChua"));
+            integratedStatistic.setTotal(integratedStatistic.getNumberOfChangeLayout() +
+                    integratedStatistic.getNumberOfReNew() +
+                    integratedStatistic.getNumberOfIncurred() +
+                    integratedStatistic.getNumberOfDismantling() +
+                    integratedStatistic.getNumberOfRepair()
+            );
+
+            statisticDataTable.add(integratedStatistic);
+        }
+
+        return statisticDataTable;
     }
 
     //    private initD
-    private void initDataTableForYear() {
+    private void initIntegrateStatisticDataTable() {
 
+        no_col.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(integratedStatisticTableView.getItems().indexOf(p.getValue()) + ""));
+        no_col.setSortable(false);
+        no_col.setStyle("-fx-alignment: CENTER;");
         year_col.setCellValueFactory(cellData -> cellData.getValue().yearProperty());
-        feb_col.setCellValueFactory(cellData -> cellData.getValue().numberOfFebProperty());
-        jan_col.setCellValueFactory(cellData -> cellData.getValue().numberOfJanProperty());
-        mar_col.setCellValueFactory(cellData -> cellData.getValue().numberOfMarProperty());
-        apr_col.setCellValueFactory(cellData -> cellData.getValue().numberOfAprProperty());
-        may_col.setCellValueFactory(cellData -> cellData.getValue().numberOfMayProperty());
-        jun_col.setCellValueFactory(cellData -> cellData.getValue().numberOfJunProperty());
-        jul_col.setCellValueFactory(cellData -> cellData.getValue().numberOfJulProperty());
-        aug_col.setCellValueFactory(cellData -> cellData.getValue().numberOfAugProperty());
-        sep_col.setCellValueFactory(cellData -> cellData.getValue().numberOfSepProperty());
-        oct_col.setCellValueFactory(cellData -> cellData.getValue().numberOfOctProperty());
-        nov_col.setCellValueFactory(cellData -> cellData.getValue().numberOfNovProperty());
-        dec_col.setCellValueFactory(cellData -> cellData.getValue().numberOfDecProperty());
+        year_col.setStyle("-fx-alignment: CENTER;");
+        month_col.setCellValueFactory(cellData -> cellData.getValue().monthProperty());
+        month_col.setStyle("-fx-alignment: CENTER;");
+        reNew_col.setCellValueFactory(cellData -> cellData.getValue().numberOfReNewProperty());
+        reNew_col.setStyle("-fx-alignment: CENTER;");
+        changeLayout_col.setCellValueFactory(cellData -> cellData.getValue().numberOfChangeLayoutProperty());
+        changeLayout_col.setStyle("-fx-alignment: CENTER;");
+        incurred_col.setCellValueFactory(cellData -> cellData.getValue().numberOfIncurredProperty());
+        incurred_col.setStyle("-fx-alignment: CENTER;");
+        dismantling_col.setCellValueFactory(cellData -> cellData.getValue().numberOfDismantlingProperty());
+        dismantling_col.setStyle("-fx-alignment: CENTER;");
+        repair_col.setCellValueFactory(cellData -> cellData.getValue().numberOfRepairProperty());
+        repair_col.setStyle("-fx-alignment: CENTER;");
+        total_col.setCellValueFactory(cellData -> cellData.getValue().totalProperty());
+        total_col.setStyle("-fx-alignment: CENTER;");
 
-        chartTable.setItems(getDataForTable(onJobBusList));
+        integratedStatisticTableView.setItems(getTableDataForIntegrateStatistic(onJobBusList));
     }
 
     private int getMonthFromDate(Date date) {
@@ -229,155 +245,130 @@ public class ChartController implements Initializable, ControlledScreen {
         return year;
     }
 
-    public void setMonthLineChart() {
-
-        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
-        monthLineChart.setTitle("THÁNG 7");
-        series.getData().add(new XYChart.Data<String, Number>("1", 130));
-        series.getData().add(new XYChart.Data<String, Number>("2", 120));
-        series.getData().add(new XYChart.Data<String, Number>("3", 110));
-        series.getData().add(new XYChart.Data<String, Number>("4", 115));
-        series.getData().add(new XYChart.Data<String, Number>("5", 190));
-        series.getData().add(new XYChart.Data<String, Number>("6", 170));
-        series.getData().add(new XYChart.Data<String, Number>("7", 130));
-        series.getData().add(new XYChart.Data<String, Number>("8", 122));
-        series.getData().add(new XYChart.Data<String, Number>("9", 135));
-        series.getData().add(new XYChart.Data<String, Number>("10", 165));
-        series.getData().add(new XYChart.Data<String, Number>("11", 129));
-        series.getData().add(new XYChart.Data<String, Number>("12", 144));
-        series.getData().add(new XYChart.Data<String, Number>("13", 130));
-        series.getData().add(new XYChart.Data<String, Number>("14", 120));
-        series.getData().add(new XYChart.Data<String, Number>("15", 110));
-        series.getData().add(new XYChart.Data<String, Number>("16", 115));
-        series.getData().add(new XYChart.Data<String, Number>("17", 190));
-        series.getData().add(new XYChart.Data<String, Number>("18", 145));
-        series.getData().add(new XYChart.Data<String, Number>("19", 130));
-        series.getData().add(new XYChart.Data<String, Number>("20", 139));
-        series.getData().add(new XYChart.Data<String, Number>("21", 135));
-        series.getData().add(new XYChart.Data<String, Number>("22", 124));
-        series.getData().add(new XYChart.Data<String, Number>("23", 129));
-        series.getData().add(new XYChart.Data<String, Number>("24", 144));
-        series.getData().add(new XYChart.Data<String, Number>("25", 170));
-        series.getData().add(new XYChart.Data<String, Number>("26", 175));
-        series.getData().add(new XYChart.Data<String, Number>("27", 134));
-        series.getData().add(new XYChart.Data<String, Number>("28", 135));
-        series.getData().add(new XYChart.Data<String, Number>("29", 165));
-        series.getData().add(new XYChart.Data<String, Number>("30", 112));
-        series.getData().add(new XYChart.Data<String, Number>("31", 144));
-
-        monthLineChart.getData().add(series);
-    }
-
-    private void displayLabelForData(XYChart.Data<String, Number> data) {
-        final Node node = data.getNode();
-        final DecimalFormat df = new DecimalFormat("$###,##0.00");
-        final Text dataText = new Text(df.format(data.getYValue()) + "");
-        node.parentProperty().addListener((ov, oldParent, parent) -> {
-            if (null != parent) {
-                Group parentGroup = (Group) parent;
-                parentGroup.getChildren().add(dataText);
-            }
-        });
-
-        node.boundsInParentProperty().addListener((ov, oldBounds, bounds) -> {
-            dataText.setLayoutX(
-                    Math.round(
-                            bounds.getMinX() + bounds.getWidth() / 2 - dataText.prefWidth(-1) / 2
-                    )
-            );
-            dataText.setLayoutY(
-                    Math.round(
-                            bounds.getMinY() - dataText.prefHeight(-1) * 0.5
-                    )
-            );
-        });
-
-//        button.setOnAction(new EventHandler<ActionEvent>() {
-//
-//            @Override
-//            public void handle(ActionEvent paramT) {
-//                bc.getData().clear();
-//                XYChart.Series series1 = new XYChart.Series();
-//
-//                for (int i = 10; i < 20; i++) {
-//
-//                    final XYChart.Data<String, Number> data = new XYChart.Data("Value " + i, 1.0 + (Math.random()*(10-1+1)));
-//                    data.nodeProperty().addListener(new ChangeListener<Node>() {
-//                        @Override
-//                        public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
-//                            if (node != null) {
-//                                setNodeStyle(data);
-//                                displayLabelForData(data);
-//                            }
-//                        }
-//                    });
-//                    series1.getData().add(data);
-//                }
-//                bc.getData().add(series1);
-//
-//            }
-//        });
-    }
-
-    private int countNumberByYear() {
-        return 1;
-    }
-
-
-    public void setYearBarChart(ObservableList<OnJobBus> newOnJobBusList, int year) {
+    public void initDataForIntegrateStatisticBarChart(ObservableList<OnJobBus> newOnJobBusList, int year) {
 
 //        yearBarChart.setTitle("THỐNG KÊ SỐ LƯỢNG XE DÁN MỚI QUA TỪNG THÁNG THEO NĂM");
 
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName(String.valueOf(year));
+//        XYChart.Series<String, Number> series = new XYChart.Series<>();
+//        series.setName(String.valueOf(year));
+//
+//        ObservableList<OnJobBus> newList =
+//                newOnJobBusList.stream()
+//                        .filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year)
+//                        .collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
+//
+//        XYChart.Data<String, Number> janData = new XYChart.Data<>("Jan", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 1).count());
+////        XYChart.Data<String, Number> janData = new XYChart.Data<>("Jan",19);
+//        series.getData().add(janData);
+//
+//        //total = newList.stream().filter(b -> getMonthFromDate(b.getDateOfConstruction()) == 2).count();
+//        XYChart.Data<String, Number> febData = new XYChart.Data<>("Feb", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 2).count());
+//        series.getData().add(febData);
+//
+//        //total = newList.stream().filter(b -> getMonthFromDate(b.getDateOfConstruction()) == 3).count();
+//        XYChart.Data<String, Number> marData = new XYChart.Data<>("Mar", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 3).count());
+//        series.getData().add(marData);
+//
+//        XYChart.Data<String, Number> aprData = new XYChart.Data<>("Apr", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 4).count());
+//        series.getData().add(aprData);
+//
+//        XYChart.Data<String, Number> mayData = new XYChart.Data<>("May", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 5).count());
+//        series.getData().add(mayData);
+//
+//        XYChart.Data<String, Number> junData = new XYChart.Data<>("Jun", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 6).count());
+//        series.getData().add(junData);
+//
+//        XYChart.Data<String, Number> julData = new XYChart.Data<>("Jul", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 7).count());
+//        series.getData().add(julData);
+//
+//        XYChart.Data<String, Number> augData = new XYChart.Data<>("Aug", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 8).count());
+//        series.getData().add(augData);
+//
+//        XYChart.Data<String, Number> sepData = new XYChart.Data<>("Sep", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 9).count());
+//        series.getData().add(sepData);
+//
+//        //total = newList.stream().filter(b -> getMonthFromDate(b.getDateOfConstruction()) == 10).count();
+//        XYChart.Data<String, Number> octData = new XYChart.Data<>("Oct", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 10).count());
+//        series.getData().add(octData);
+//
+//        XYChart.Data<String, Number> novData = new XYChart.Data<>("Nov", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 11).count());
+//        series.getData().add(novData);
+//
+//        XYChart.Data<String, Number> decData = new XYChart.Data<>("Dec", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 12).count());
+//        series.getData().add(decData);
+
+//        optionBarChart.getData().add(series);
+
+        optionBarChart.getData().addAll(
+                makeSeries("DanMoi", year),
+                makeSeries("ThayLayout", year),
+                makeSeries("PhatSinh", year),
+                makeSeries("ThaoDo", year),
+                makeSeries("SuaChua", year)
+
+        );
+    }
 
 
-        ObservableList<OnJobBus> newList =
-                newOnJobBusList.stream()
-                        .filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year)
-                        .collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
+    private XYChart.Series<String, Number> makeSeries(String name, int year) {
 
-        XYChart.Data<String, Number> janData = new XYChart.Data<>("Jan", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 1).count());
-//        XYChart.Data<String, Number> janData = new XYChart.Data<>("Jan",19);
-        series.getData().add(janData);
+//        ObservableList<OnJobBus> newList =
+//                newOnJobBusList.stream()
+//                        .filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year)
+//                        .collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
 
-        //total = newList.stream().filter(b -> getMonthFromDate(b.getDateOfConstruction()) == 2).count();
-        XYChart.Data<String, Number> febData = new XYChart.Data<>("Feb", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 2).count());
-        series.getData().add(febData);
+        return new XYChart.Series(name,
+                FXCollections.observableArrayList(
+                        new XYChart.Data("Jan",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 1 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Feb",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 2 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Mar",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 3 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Apr",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 4 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())),
+                        new XYChart.Data("May",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 5 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Jun",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 6 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Jul",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 7 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Aug",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 8 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Sep",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 9 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Oct",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 10 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Nov",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 11 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        ),
+                        new XYChart.Data("Dec",
+                                Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 12 &&
+                                        b.getOnJobConstructionContent().equals(name)).count())
+                        )
+                )
 
-        //total = newList.stream().filter(b -> getMonthFromDate(b.getDateOfConstruction()) == 3).count();
-        XYChart.Data<String, Number> marData = new XYChart.Data<>("Mar", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 3).count());
-        series.getData().add(marData);
-
-        XYChart.Data<String, Number> aprData = new XYChart.Data<>("Apr", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 4).count());
-        series.getData().add(aprData);
-
-        XYChart.Data<String, Number> mayData = new XYChart.Data<>("May", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 5).count());
-        series.getData().add(mayData);
-
-        XYChart.Data<String, Number> junData = new XYChart.Data<>("Jun", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 6).count());
-        series.getData().add(junData);
-
-        XYChart.Data<String, Number> julData = new XYChart.Data<>("Jul", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 7).count());
-        series.getData().add(julData);
-
-        XYChart.Data<String, Number> augData = new XYChart.Data<>("Aug", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 8).count());
-        series.getData().add(augData);
-
-        XYChart.Data<String, Number> sepData = new XYChart.Data<>("Sep", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 9).count());
-        series.getData().add(sepData);
-
-        //total = newList.stream().filter(b -> getMonthFromDate(b.getDateOfConstruction()) == 10).count();
-        XYChart.Data<String, Number> octData = new XYChart.Data<>("Oct", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 10).count());
-        series.getData().add(octData);
-
-        XYChart.Data<String, Number> novData = new XYChart.Data<>("Nov", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 11).count());
-        series.getData().add(novData);
-
-        XYChart.Data<String, Number> decData = new XYChart.Data<>("Dec", newList.stream().filter(b -> getMonthFromDate(b.getOnJobDateOfConstruction()) == 12).count());
-        series.getData().add(decData);
-
-        yearBarChart.getData().add(series);
+        );
     }
 
     @FXML
@@ -392,17 +383,27 @@ public class ChartController implements Initializable, ControlledScreen {
 
         System.out.println("chart Controller");
 
-        setYearBarChart(onJobBusList, getYearFromDate(new Date()));
-        initDataTableForYear();
-
-        routeComboBox.getItems().addAll(getComboBoxRouteNumberData(onJobBusList));
+        initDataForIntegrateStatisticBarChart(onJobBusList, getYearFromDate(new Date()));
+        initIntegrateStatisticDataTable();
 
         yearsComboBox.getItems().addAll(getComboBoxYearData(onJobBusList));
 
+        optionComboBox.getItems().addAll(comboBoxOptionData);
+        optionComboBox.getSelectionModel().selectFirst();
+
+        routeComboBox.getItems().addAll(getComboBoxRouteNumberData(onJobBusList));
+
         yearsComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                setYearBarChart(onJobBusList, newValue);
+                initDataForIntegrateStatisticBarChart(onJobBusList, newValue);
                 changeNewPasteDataByYear(onJobBusList, newValue);
+            }
+        });
+
+
+        optionComboBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                System.out.println("index option: " + newValue);
             }
         });
 
@@ -410,39 +411,39 @@ public class ChartController implements Initializable, ControlledScreen {
         buttonRefresh.setOnAction(event -> {
             refreshComboBoxYear();
             refreshComboBoxRouteNumber();
-            yearBarChart.getData().clear();
-            setYearBarChart(onJobBusList, getYearFromDate(new Date()));
+            optionBarChart.getData().clear();
+            initDataForIntegrateStatisticBarChart(onJobBusList, getYearFromDate(new Date()));
             refreshPasteDataByYear();
-            chartTable.getItems().clear();
-            initDataTableForYear();
+            integratedStatisticTableView.getItems().clear();
+            initIntegrateStatisticDataTable();
         });
     }
 
     private void refreshPasteDataByYear() {
-        chartTable.getItems().clear();
+        integratedStatisticTableView.getItems().clear();
         changeNewPasteDataByYear(onJobBusList, getYearFromDate(new Date()));
     }
 
-    //thay đổi data table
+    //thay đổi dữ liệu xe bus (xe dán mới) trong bảng theo năm
     private void changeNewPasteDataByYear(ObservableList<OnJobBus> onJobBusList, int year) {
 
-        Statistic statistic = new Statistic(
-                new SimpleIntegerProperty(year),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 1).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 2).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 3).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 4).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 5).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 6).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 7).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 8).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 9).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 10).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 11).count())),
-                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 12).count()))
-        );
+//        IntegratedStatistic statistic = new IntegratedStatistic(
+//                new SimpleIntegerProperty(year),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 1).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 2).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 3).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 4).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 5).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 6).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 7).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 8).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 9).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 10).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 11).count())),
+//                new SimpleIntegerProperty(Integer.valueOf((int) onJobBusList.stream().filter(b -> getYearFromDate(b.getOnJobDateOfConstruction()) == year && getMonthFromDate(b.getOnJobDateOfConstruction()) == 12).count()))
+//        );
 
-        chartTable.getItems().add(statistic);
+//        chartTable.getItems().add(statistic);
     }
 
     private void refreshComboBoxYear() {

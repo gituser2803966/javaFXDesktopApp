@@ -2,7 +2,7 @@ package org.openjfx.models;
 
 public enum EMonth {
 
-    Jan("1"),
+    Jan("Jan"),
     Feb("Feb"),
     Mar("Mar"),
     Apr("Apr"),

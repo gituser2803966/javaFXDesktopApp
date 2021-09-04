@@ -42,7 +42,7 @@ public class NavigationController implements Initializable, ControlledScreen{
             //navBorderPanel.getChildren().add(myController.getScreen(DashBoardController.screenBusListID));
 
             BorderPane node = (BorderPane) navBorderPanel.getScene().getRoot();
-            node.setCenter(myController.getScreen(DashBoardController.screenBusListID));
+            node.setCenter(myController.getScreen(DashBoardController.screenDataID));
             //System.out.println("node: "+node);
         });
 

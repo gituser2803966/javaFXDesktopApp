@@ -23,10 +23,12 @@ public class OnJobBus {
     private StringProperty onJobNumberPlate = new SimpleStringProperty("");
     //tuyến
     private IntegerProperty onJobRouteNumber = new SimpleIntegerProperty(0);
-
+    //nội dung thi công //Dán mới //thay layout //Phát sinh //sữa chữa// tháo dỡ
+    private StringProperty onJobConstructionContent = new SimpleStringProperty("");
     //ngày thi công
     private ObjectProperty<Date> onJobDateOfConstruction = new SimpleObjectProperty<>(new Date());
-
+    //ngày hết hạn
+    private ObjectProperty<Date> onJobEndDay = new SimpleObjectProperty<>(new Date());
     //chủng loại xe
     private StringProperty onJobVehicleCategory = new SimpleStringProperty("");
     //agency
@@ -39,14 +41,16 @@ public class OnJobBus {
     public OnJobBus() {
     }
 
-    public OnJobBus(StringProperty onJobUuid, StringProperty onJobJobCode, StringProperty onJobBrand, StringProperty onJobSlogan, StringProperty onJobNumberPlate, IntegerProperty onJobRouteNumber, ObjectProperty<Date> onJobDateOfConstruction, StringProperty onJobVehicleCategory, StringProperty onJobAgency, StringProperty onJobEnterprise, StringProperty onJobCs) {
+    public OnJobBus(StringProperty onJobUuid, StringProperty onJobJobCode, StringProperty onJobBrand, StringProperty onJobSlogan, StringProperty onJobNumberPlate, IntegerProperty onJobRouteNumber, StringProperty onJobConstructionContent, ObjectProperty<Date> onJobDateOfConstruction, ObjectProperty<Date> onJobEndDay, StringProperty onJobVehicleCategory, StringProperty onJobAgency, StringProperty onJobEnterprise, StringProperty onJobCs) {
         this.onJobUuid = onJobUuid;
         this.onJobJobCode = onJobJobCode;
         this.onJobBrand = onJobBrand;
         this.onJobSlogan = onJobSlogan;
         this.onJobNumberPlate = onJobNumberPlate;
         this.onJobRouteNumber = onJobRouteNumber;
+        this.onJobConstructionContent = onJobConstructionContent;
         this.onJobDateOfConstruction = onJobDateOfConstruction;
+        this.onJobEndDay = onJobEndDay;
         this.onJobVehicleCategory = onJobVehicleCategory;
         this.onJobAgency = onJobAgency;
         this.onJobEnterprise = onJobEnterprise;
@@ -133,6 +137,18 @@ public class OnJobBus {
         this.onJobRouteNumber.set(onJobRouteNumber);
     }
 
+    public String getOnJobConstructionContent() {
+        return onJobConstructionContent.get();
+    }
+
+    public StringProperty onJobConstructionContentProperty() {
+        return onJobConstructionContent;
+    }
+
+    public void setOnJobConstructionContent(String onJobConstructionContent) {
+        this.onJobConstructionContent.set(onJobConstructionContent);
+    }
+
     public Date getOnJobDateOfConstruction() {
         return onJobDateOfConstruction.get();
     }
@@ -143,6 +159,18 @@ public class OnJobBus {
 
     public void setOnJobDateOfConstruction(Date onJobDateOfConstruction) {
         this.onJobDateOfConstruction.set(onJobDateOfConstruction);
+    }
+
+    public Date getOnJobEndDay() {
+        return onJobEndDay.get();
+    }
+
+    public ObjectProperty<Date> onJobEndDayProperty() {
+        return onJobEndDay;
+    }
+
+    public void setOnJobEndDay(Date onJobEndDay) {
+        this.onJobEndDay.set(onJobEndDay);
     }
 
     public String getOnJobVehicleCategory() {
@@ -191,5 +219,25 @@ public class OnJobBus {
 
     public void setOnJobCs(String onJobCs) {
         this.onJobCs.set(onJobCs);
+    }
+
+    @Override
+    public String toString() {
+        return "OnJobBus{" +
+                "id=" + id +
+                ", onJobUuid=" + onJobUuid +
+                ", onJobJobCode=" + onJobJobCode +
+                ", onJobBrand=" + onJobBrand +
+                ", onJobSlogan=" + onJobSlogan +
+                ", onJobNumberPlate=" + onJobNumberPlate +
+                ", onJobRouteNumber=" + onJobRouteNumber +
+                ", onJobConstructionContent=" + onJobConstructionContent +
+                ", onJobDateOfConstruction=" + onJobDateOfConstruction +
+                ", onJobEndDay=" + onJobEndDay +
+                ", onJobVehicleCategory=" + onJobVehicleCategory +
+                ", onJobAgency=" + onJobAgency +
+                ", onJobEnterprise=" + onJobEnterprise +
+                ", onJobCs=" + onJobCs +
+                '}';
     }
 }

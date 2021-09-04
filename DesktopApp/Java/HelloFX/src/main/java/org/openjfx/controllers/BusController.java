@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -78,34 +79,30 @@ public class BusController implements Initializable, ControlledScreen {
 
     @FXML
     private ComboBox<String> routersComboBox;
-
     //on job bus
     @FXML
     private TableView<OnJobBus> onJobBusTable;
-
     //số thứ tự
     @FXML
     private TableColumn<OnJobBus, String> onJobNo_col;
     //xí nghiệp
     @FXML
     private TableColumn<OnJobBus, String> onJobEnterprise_col;
-
     //tuyến xe
     @FXML
     private TableColumn<OnJobBus, Integer> onJobRouteNumber_col;
-
     //chủng loại xe
     @FXML
     private TableColumn<OnJobBus, String> onJobVehicleCategory_col;
-
     //biển kiểm soát
     @FXML
     private TableColumn<OnJobBus, String> onJobNumberPlate_col;
-
-    //biển kiểm soát
+    //ngày thi công
     @FXML
     private TableColumn<OnJobBus, Date> onJobDateOfConstruction_col;
-
+    //ngày hết hạn
+    @FXML
+    private TableColumn<OnJobBus, Date> onJobEndDay_col;
     //mã hàng
     @FXML
     private TableColumn<OnJobBus, String> onJobJobCode_col;
@@ -115,10 +112,12 @@ public class BusController implements Initializable, ControlledScreen {
     //nhãn hàng
     @FXML
     private TableColumn<OnJobBus, String> onJobBrand_col;
+    //nội dung thi công
+    @FXML
+    private TableColumn<OnJobBus, String> onJobConstructionContent_col;
     //slogan
     @FXML
     private TableColumn<OnJobBus, String> onJobSlogan_col;
-
     //cs
     @FXML
     private TableColumn<OnJobBus, String> onJobCs_col;
@@ -127,7 +126,6 @@ public class BusController implements Initializable, ControlledScreen {
     private ObservableList<OnJobBus> onJobBusData = FXCollections.observableArrayList();
 
     private static FilteredList<OnJobBus> onJobBusFilteredList = null;
-
 
     //bus list
     @FXML
@@ -986,6 +984,39 @@ public class BusController implements Initializable, ControlledScreen {
                         if (target.size() > 0) {
                             target.get(0).setBrand(newValue);
                         }
+                    }
+
+                });
+
+        //Nội dung thi công
+        onJobConstructionContent_col.setCellValueFactory(cellData -> cellData.getValue().onJobConstructionContentProperty());
+        onJobConstructionContent_col.setCellFactory(ComboBoxTableCell.forTableColumn(FXCollections.observableArrayList("DanMoi","ThayLayout","SuaChua","ThaoDo","PhatSinh")));
+        onJobConstructionContent_col.setOnEditCommit(
+                (TableColumn.CellEditEvent<OnJobBus, String> t) -> {
+
+                    OnJobBus ojBus = onJobBusTable.getSelectionModel().getSelectedItem();
+
+                    String oldValue = ojBus.getOnJobConstructionContent();
+                    String newValue = t.getNewValue();
+
+                    if (!oldValue.equals(newValue)) {
+                        //update new job code
+                        t.getTableView().getItems()
+                                .get(t.getTablePosition().getRow())
+                                .setOnJobConstructionContent(t.getNewValue());
+
+                        Bson filters = eq("onJobUuid", ojBus.getOnJobUuid());
+                        Bson updateValue = set("onJobConstructionContent", newValue);
+                        updateOnJobBus(filters, updateValue);
+
+//                        ObservableList<Bus> target =
+//                                busData.stream()
+//                                        .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
+//                                        .collect(Collectors.collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
+//
+//                        if (target.size() > 0) {
+//                            target.get(0).setBrand(newValue);
+//                        }
                     }
 
                 });

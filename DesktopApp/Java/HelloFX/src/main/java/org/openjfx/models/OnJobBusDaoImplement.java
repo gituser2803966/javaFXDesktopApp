@@ -10,6 +10,11 @@ import javafx.collections.ObservableList;
 import org.bson.conversions.Bson;
 import org.openjfx.service.MongoDBConnection;
 
+import java.util.Date;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
+
 public class OnJobBusDaoImplement implements OnJobBusDao {
 
     MongoDatabase mgDB = MongoDBConnection.getConnection();
@@ -33,8 +38,9 @@ public class OnJobBusDaoImplement implements OnJobBusDao {
 
     @Override
     public ObservableList<OnJobBus> getOnJobBusList() {
-        onJobBusCollection.createIndex(Indexes.ascending("routeNumber"));
-        onJobBusCollection.createIndex(Indexes.ascending("routeNumber", "numberPlate"));
+
+        onJobBusCollection.createIndex(Indexes.ascending("onJobRouteNumber"));
+        onJobBusCollection.createIndex(Indexes.ascending("onJobRouteNumber", "onJobNumberPlate"));
 
 //        return onJobBusCollection.find().sort(Sorts.ascending("routeNumber", "numberPlate"))
 //                .into(FXCollections.observableArrayList());
@@ -48,5 +54,22 @@ public class OnJobBusDaoImplement implements OnJobBusDao {
         UpdateResult result = onJobBusCollection.updateOne(filter, value);
         System.out.println("start update ********");
         return result.getModifiedCount();
+    }
+
+    @Override
+    public void addNewFieldToDocument(String fieldName) {
+
+        onJobBusCollection.find().forEach(el->{
+//            System.out.println(el.getOnJobRouteNumber());
+            onJobBusCollection.updateOne(eq("_id",el.getId()),set(fieldName,new Date()));
+
+        });
+
+        System.out.println("update new field to all document successfully");
+
+//        UpdateResult result = onJobBusCollection.updateOne(filter, value);
+//        System.out.println("UpdateResult: "+result);
+//        System.out.println("add new field successfully");
+        return;
     }
 }

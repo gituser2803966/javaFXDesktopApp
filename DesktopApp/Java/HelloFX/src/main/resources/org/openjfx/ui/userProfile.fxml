@@ -20,7 +20,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" style="-fx-background-color: #3686ff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <ImageView fx:id="backArrowImageView" cache="true" fitHeight="32.0" fitWidth="32.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="backArrowImageView" cache="true" fitHeight="25.0" fitWidth="25.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>

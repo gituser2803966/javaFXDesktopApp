@@ -19,139 +19,183 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="chartBorderPane" cache="true" prefWidth="800.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controllers.ChartController">
+<BorderPane fx:id="chartBorderPane" cache="true" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controllers.ChartController">
    <bottom>
       <AnchorPane BorderPane.alignment="CENTER" />
    </bottom>
    <center>
       <ScrollPane cache="true" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
         <content>
-          <AnchorPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+          <AnchorPane cache="true">
                <children>
-                  <VBox cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                  <VBox cache="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane>
+                        <HBox alignment="CENTER_LEFT" cache="true" style="-fx-background-color: #fff;">
                            <children>
-                              <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                              <ComboBox fx:id="yearsComboBox" cache="true" minHeight="28.0" minWidth="120.0" promptText="Chọn năm" visibleRowCount="15">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </ComboBox>
+                              <ComboBox fx:id="optionComboBox" cache="true" minHeight="28.0" minWidth="120.0" promptText="Chọn loại thi công">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </ComboBox>
+                              <ComboBox fx:id="routeComboBox" cache="true" minHeight="28.0" minWidth="120.0" promptText="Chọn tuyến">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </ComboBox>
+                              <Button fx:id="buttonRefresh" cache="true" minHeight="28.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-color: #3686ff; -fx-text-fill: #fff;" text="Làm mới dữ liệu">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox cache="true" style="-fx-background-color: #fff;">
+                           <children>
+                              <VBox cache="true">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" cache="true" prefHeight="40.0">
+                                    <HBox alignment="CENTER_LEFT">
                                        <children>
-                                          <ComboBox fx:id="yearsComboBox" cache="true" minHeight="28.0" minWidth="120.0" promptText="Chọn năm" visibleRowCount="15">
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2bd522" height="15.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="15.0">
                                              <HBox.margin>
-                                                <Insets left="70.0" right="10.0" />
+                                                <Insets right="5.0" />
                                              </HBox.margin>
-                                          </ComboBox>
-                                          <ComboBox fx:id="routeComboBox" cache="true" minHeight="28.0" minWidth="120.0" promptText="Chọn tuyến">
-                                             <HBox.margin>
-                                                <Insets right="10.0" />
-                                             </HBox.margin>
-                                          </ComboBox>
-                                          <ComboBox fx:id="brandComboBox" cache="true" minHeight="28.0" minWidth="120.0" promptText="Chọn nhãn hàng">
-                                             <HBox.margin>
-                                                <Insets right="10.0" />
-                                             </HBox.margin>
-                                          </ComboBox>
-                                          <Button fx:id="buttonRefresh" cache="true" minHeight="28.0" minWidth="120.0" mnemonicParsing="false" style="-fx-background-color: #3686ff; -fx-text-fill: #fff;" text="Làm mới dữ liệu">
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
-                                          </Button>
+                                          </Rectangle>
+                                          <Label cache="true" text="Thống kê lượng xe theo tháng với nhiều tiêu chí" textFill="#635252" wrapText="true">
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                        <VBox.margin>
-                                          <Insets top="20.0" />
+                                          <Insets bottom="10.0" top="10.0" />
                                        </VBox.margin>
-                                    </HBox>
-                                    <VBox cache="true" style="-fx-background-color: #fff;">
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT">
-                                             <VBox.margin>
-                                                <Insets top="20.0" />
-                                             </VBox.margin>
-                                             <padding>
-                                                <Insets left="50.0" />
-                                             </padding>
-                                          </HBox>
-                                          <HBox cache="true">
-                                             <children>
-                                                <BarChart fx:id="yearBarChart" cache="true" prefHeight="300.0" title="THỐNG KÊ TỔNG LƯỢNG XE BUÝT ĐƯỢC DÁN MỚI THEO NĂM" HBox.hgrow="ALWAYS">
-                                                  <xAxis>
-                                                    <CategoryAxis label="Các tháng trong năm" side="BOTTOM" fx:id="xAxis" />
-                                                  </xAxis>
-                                                  <yAxis>
-                                                    <NumberAxis fx:id="yAxis" label="Số lượng" side="LEFT" />
-                                                  </yAxis>
-                                                   <padding>
-                                                      <Insets right="200.0" />
-                                                   </padding>
-                                                </BarChart>
-                                             </children>
-                                          </HBox>
-                                       </children>
                                        <padding>
                                           <Insets left="20.0" />
                                        </padding>
-                                    </VBox>
-                                    <VBox cache="true" style="-fx-background-color: #fff;">
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT">
-                                             <children>
-                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#03b0ff" height="15.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="15.0">
-                                                   <HBox.margin>
-                                                      <Insets right="5.0" />
-                                                   </HBox.margin>
-                                                </Rectangle>
-                                                <Label cache="true" text="Thống kê tổng lượng xe buýt được dán mới theo năm " textFill="#635252" wrapText="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="16.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets bottom="10.0" top="10.0" />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <HBox>
-                                             <children>
-                                                <TableView fx:id="chartTable" cache="true" maxWidth="1.7976931348623157E308" prefHeight="200.0">
-                                                  <columns>
-                                                      <TableColumn fx:id="year_col" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Year" />
-                                                    <TableColumn fx:id="jan_col" prefWidth="75.0" text="Jan" />
-                                                    <TableColumn fx:id="feb_col" prefWidth="75.0" text="Feb" />
-                                                      <TableColumn fx:id="mar_col" prefWidth="75.0" text="Mar" />
-                                                      <TableColumn fx:id="apr_col" prefWidth="75.0" text="Apr" />
-                                                      <TableColumn fx:id="may_col" prefWidth="75.0" text="May" />
-                                                      <TableColumn fx:id="jun_col" prefWidth="75.0" text="Jun" />
-                                                      <TableColumn fx:id="jul_col" prefWidth="75.0" text="Jul" />
-                                                      <TableColumn fx:id="aug_col" prefWidth="75.0" text="Aug" />
-                                                      <TableColumn fx:id="sep_col" prefWidth="75.0" text="Sep" />
-                                                      <TableColumn fx:id="oct_col" prefWidth="75.0" text="Oct" />
-                                                      <TableColumn fx:id="nov_col" prefWidth="75.0" text="Nov" />
-                                                      <TableColumn fx:id="dec_col" prefWidth="75.0" text="Dec" />
-                                                  </columns>
-                                                   <HBox.margin>
-                                                      <Insets bottom="20.0" right="20.0" />
-                                                   </HBox.margin>
-                                                </TableView>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                             <padding>
-                                                <Insets bottom="10.0" />
-                                             </padding>
-                                          </HBox>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
+                                    </HBox>
+                                    <BarChart fx:id="optionBarChart" cache="true" maxWidth="-Infinity" minHeight="400.0" prefWidth="700.0" title="THỐNG KÊ LƯỢNG XE THEO TỪNG THÁNG TRONG NĂM">
+                                      <xAxis>
+                                        <CategoryAxis cache="true" label="Các tháng trong năm" fx:id="xAxis" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis fx:id="yAxis" cache="true" label="Số lượng" side="LEFT" />
+                                      </yAxis>
                                        <padding>
-                                          <Insets left="70.0" />
+                                          <Insets bottom="10.0" top="10.0" />
                                        </padding>
-                                    </VBox>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                    </BarChart>
                                  </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <TableView fx:id="integratedStatisticTableView" cache="true" maxWidth="1.7976931348623157E308" minHeight="350.0">
+                                      <columns>
+                                        <TableColumn fx:id="no_col" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" text="No" />
+                                          <TableColumn fx:id="year_col" maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" text="Năm" />
+                                        <TableColumn fx:id="month_col" minWidth="60.0" prefWidth="-1.0" text="Tháng" />
+                                          <TableColumn fx:id="reNew_col" minWidth="70.0" prefWidth="-1.0" text="Dán mới" />
+                                          <TableColumn fx:id="changeLayout_col" minWidth="80.0" prefWidth="-1.0" text="Thay Layout" />
+                                          <TableColumn fx:id="incurred_col" minWidth="70.0" prefWidth="-1.0" text="Phát sinh" />
+                                          <TableColumn fx:id="dismantling_col" minWidth="60.0" prefWidth="-1.0" text="Tháo dỡ" />
+                                          <TableColumn fx:id="repair_col" minWidth="70.0" prefWidth="-1.0" text="Sữa chữa" />
+                                          <TableColumn fx:id="total_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Tổng" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
                               </VBox>
                            </children>
-                        </AnchorPane>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox cache="true" style="-fx-background-color: #fff;">
+                           <children>
+                              <VBox cache="true">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT">
+                                       <children>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e21f1f" height="15.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="15.0">
+                                             <HBox.margin>
+                                                <Insets right="5.0" />
+                                             </HBox.margin>
+                                          </Rectangle>
+                                          <Label cache="true" text="Thống kê lượng xe theo năm" textFill="#635252" wrapText="true">
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
+                                    <BarChart fx:id="yearBarChart" cache="true" maxWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" title="THỐNG KÊ LƯỢNG XE THEO NĂM">
+                                       <xAxis>
+                                          <CategoryAxis cache="true" label="Các tháng trong năm" fx:id="xAxis1" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis fx:id="yAxis1" cache="true" label="Số lượng" side="LEFT" />
+                                       </yAxis>
+                                       <padding>
+                                          <Insets bottom="10.0" top="20.0" />
+                                       </padding>
+                                    </BarChart>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <TableView fx:id="chartTable1" cache="true" maxHeight="-Infinity" prefHeight="360.0">
+                                 <columns>
+                                    <TableColumn fx:id="year_col1" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="-1.0" text="Year" />
+                                    <TableColumn fx:id="jan_col1" minWidth="50.0" prefWidth="-1.0" text="Jan" />
+                                    <TableColumn fx:id="feb_col1" minWidth="50.0" prefWidth="-1.0" text="Feb" />
+                                    <TableColumn fx:id="mar_col1" minWidth="50.0" prefWidth="-1.0" text="Mar" />
+                                    <TableColumn fx:id="apr_col1" minWidth="50.0" prefWidth="-1.0" text="Apr" />
+                                    <TableColumn fx:id="may_col1" minWidth="50.0" prefWidth="-1.0" text="May" />
+                                    <TableColumn fx:id="jun_col1" minWidth="50.0" prefWidth="-1.0" text="Jun" />
+                                    <TableColumn fx:id="jul_col1" minWidth="50.0" prefWidth="-1.0" text="Jul" />
+                                    <TableColumn fx:id="aug_col1" minWidth="50.0" prefWidth="-1.0" text="Aug" />
+                                    <TableColumn fx:id="sep_col1" minWidth="50.0" prefWidth="-1.0" text="Sep" />
+                                    <TableColumn fx:id="oct_col1" minWidth="50.0" prefWidth="-1.0" text="Oct" />
+                                    <TableColumn fx:id="nov_col1" minWidth="50.0" prefWidth="-1.0" text="Nov" />
+                                    <TableColumn fx:id="dec_col1" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" text="Dec" />
+                                 </columns>
+                                 <HBox.margin>
+                                    <Insets bottom="100.0" right="20.0" top="90.0" />
+                                 </HBox.margin>
+                              </TableView>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>
@@ -162,7 +206,7 @@
    <top>
       <HBox alignment="CENTER_LEFT" cache="true" prefHeight="40.0" style="-fx-background-color: #3686ff;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="backArrowImageView" cache="true" fitHeight="32.0" fitWidth="32.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="backArrowImageView" cache="true" fitHeight="24.0" fitWidth="24.0" onMousePressed="#backToNavigationScreen" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/back_arrow_icon_white.png" />
                </image>
