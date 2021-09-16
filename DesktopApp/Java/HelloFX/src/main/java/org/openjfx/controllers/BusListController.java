@@ -13,8 +13,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -22,7 +20,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -40,17 +37,16 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
 import static java.util.stream.Collectors.toList;
 
-public class BusController implements Initializable, ControlledScreen {
+public class BusListController implements Initializable, ControlledScreen {
 
     ScreensController myController;
-    BusDaoImplementation busDaoImp = new BusDaoImplementation();
+    BusListDaoImplementation busDaoImp = new BusListDaoImplementation();
     OnJobBusDaoImplement onJobBusDaoImp = new OnJobBusDaoImplement();
 
     @FXML
@@ -129,80 +125,80 @@ public class BusController implements Initializable, ControlledScreen {
 
     //bus list
     @FXML
-    private TableView<Bus> busTable;
+    private TableView<BusList> busTable;
 
     //số thứ tự
     @FXML
-    private TableColumn<Bus, String> no_col;
+    private TableColumn<BusList, String> no_col;
     //xí nghiệp
     @FXML
-    private TableColumn<Bus, String> enterprise_col;
+    private TableColumn<BusList, String> enterprise_col;
     //bãi xe
     @FXML
-    private TableColumn<Bus, String> parkingLot_col;
+    private TableColumn<BusList, String> parkingLot_col;
     //tuyến xe
     @FXML
-    private TableColumn<Bus, Integer> routeNumber_col;
+    private TableColumn<BusList, Integer> routeNumber_col;
 
     //chủng loại xe
     @FXML
-    private TableColumn<Bus, String> vehicleCategory_col;
+    private TableColumn<BusList, String> vehicleCategory_col;
     //hiện trạng
     @FXML
-    private TableColumn<Bus, String> status_col;
+    private TableColumn<BusList, String> status_col;
     //biển kiểm soát
     @FXML
-    private TableColumn<Bus, String> numberPlate_col;
+    private TableColumn<BusList, String> numberPlate_col;
     //ngày thi công
     @FXML
-    private TableColumn<Bus, Date> dateOfConstruction_col;
+    private TableColumn<BusList, Date> dateOfConstruction_col;
     //mã hàng
     @FXML
-    private TableColumn<Bus, String> jobCode_col;
+    private TableColumn<BusList, String> jobCode_col;
     //agency
     @FXML
-    private TableColumn<Bus, String> agency_col;
+    private TableColumn<BusList, String> agency_col;
     //nhãn hàng
     @FXML
-    private TableColumn<Bus, String> brand_col;
+    private TableColumn<BusList, String> brand_col;
     //slogan
     @FXML
-    private TableColumn<Bus, String> slogan_col;
+    private TableColumn<BusList, String> slogan_col;
     //thời hạn hợp đồng ==> production
     @FXML
-    private TableColumn<Bus, Integer> duration_col;
+    private TableColumn<BusList, Integer> duration_col;
     //Đội thi công
     @FXML
-    private TableColumn<Bus, String> constructionTeam_col;
+    private TableColumn<BusList, String> constructionTeam_col;
     //In - Quy cách
     @FXML
-    private TableColumn<Bus, String> printAndSupplier_col;
+    private TableColumn<BusList, String> printAndSupplier_col;
     //Mô tả
     @FXML
-    private TableColumn<Bus, String> description_col;
+    private TableColumn<BusList, String> description_col;
     //cs
     @FXML
-    private TableColumn<Bus, String> cs_col;
+    private TableColumn<BusList, String> cs_col;
     //ngày bắt đầu
     @FXML
-    private TableColumn<Bus, Date> startDay_col;
+    private TableColumn<BusList, Date> startDay_col;
     //ngày kết thúc
     @FXML
-    private TableColumn<Bus, Date> endDay_col;
+    private TableColumn<BusList, Date> endDay_col;
     //thời hạn
     @FXML
-    private TableColumn<Bus, Number> remainingDay_col;
+    private TableColumn<BusList, Number> remainingDay_col;
     //
     @FXML
-    private TableColumn<Bus, Boolean> contract_col;
+    private TableColumn<BusList, Boolean> contract_col;
     //note
     @FXML
-    private TableColumn<Bus, String> note_col;
+    private TableColumn<BusList, String> note_col;
 
     @FXML
-    private ObservableList<Bus> busData = FXCollections.observableArrayList();
+    private ObservableList<BusList> busListData = FXCollections.observableArrayList();
 
-    private static FilteredList<Bus> busFilteredList = null;
+    private static FilteredList<BusList> busListFilteredList = null;
 
     //get all distinct route
     private void getAllRouteForComboBox() {
@@ -213,9 +209,9 @@ public class BusController implements Initializable, ControlledScreen {
     }
 
     //get data for table
-    public ObservableList<Bus> getBusList() {
-        busData = busDaoImp.getBusList();
-        return busData;
+    public ObservableList<BusList> getBusList() {
+        busListData = busDaoImp.getBusList();
+        return busListData;
     }
 
 
@@ -252,7 +248,7 @@ public class BusController implements Initializable, ControlledScreen {
     }
 
     @FXML
-    private void sendDataToChartScreen(ObservableList<OnJobBus> b) {
+    private void sendOnJobBusListDataToChartScreen(ObservableList<OnJobBus> b) {
 
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("ui/chart.fxml"));
@@ -261,7 +257,7 @@ public class BusController implements Initializable, ControlledScreen {
                     new Scene(loader.load())
             );
             ChartController controller = loader.getController();
-            controller.initData(b);
+            controller.initDataForOnJobBusList(b);
 //            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -282,14 +278,14 @@ public class BusController implements Initializable, ControlledScreen {
 
         busTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        Callback<TableColumn<Bus, String>, TableCell<Bus, String>> textFieldCellFactory
-                = (TableColumn<Bus, String> param) -> new EditingCell();
+        Callback<TableColumn<BusList, String>, TableCell<BusList, String>> textFieldCellFactory
+                = (TableColumn<BusList, String> param) -> new EditingCell();
 
-        Callback<TableColumn<Bus, Date>, TableCell<Bus, Date>> dateCellFactory
-                = (TableColumn<Bus, Date> param) -> new DateEditingCell();
+        Callback<TableColumn<BusList, Date>, TableCell<BusList, Date>> dateCellFactory
+                = (TableColumn<BusList, Date> param) -> new DateEditingCell();
 
-        Callback<TableColumn<Bus, Integer>, TableCell<Bus, Integer>> integerCellFactory
-                = (TableColumn<Bus, Integer> param) -> new IntegerEditingCell();
+        Callback<TableColumn<BusList, Integer>, TableCell<BusList, Integer>> integerCellFactory
+                = (TableColumn<BusList, Integer> param) -> new IntegerEditingCell();
 
         //no
         no_col.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(busTable.getItems().indexOf(p.getValue()) + ""));
@@ -299,16 +295,16 @@ public class BusController implements Initializable, ControlledScreen {
         enterprise_col.setCellValueFactory(cellData -> cellData.getValue().enterpriseProperty());
         enterprise_col.setCellFactory(TextFieldTableCell.forTableColumn());
         enterprise_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getEnterprise();
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getEnterprise();
                     String newValue = t.getNewValue();
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setEnterprise(t.getNewValue());
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("enterprise", newValue);
                         updateInBackground(filters, updateValue);
                         System.out.println("=== Update Doanh nghiệp ===");
@@ -322,17 +318,17 @@ public class BusController implements Initializable, ControlledScreen {
         parkingLot_col.setCellFactory(TextFieldTableCell.forTableColumn());
         //parkingLot_col.setCellFactory(textFieldCellFactory);
         parkingLot_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getParkingLot();
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getParkingLot();
                     String newValue = t.getNewValue();
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setParkingLot(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("parkingLot", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -343,18 +339,18 @@ public class BusController implements Initializable, ControlledScreen {
         routeNumber_col.setCellValueFactory(cellData -> cellData.getValue().routeNumberProperty().asObject());
         routeNumber_col.setCellFactory(integerCellFactory);
         routeNumber_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, Integer> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    int oldValue = bus.getRouteNumber();
+                (TableColumn.CellEditEvent<BusList, Integer> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    int oldValue = busList.getRouteNumber();
                     int newValue = t.getNewValue();
 
                     if (oldValue != newValue) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setRouteNumber(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("routeNumber", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -366,18 +362,18 @@ public class BusController implements Initializable, ControlledScreen {
         vehicleCategory_col.setCellValueFactory(cellData -> cellData.getValue().vehicleCategoryProperty());
         vehicleCategory_col.setCellFactory(TextFieldTableCell.forTableColumn());
         vehicleCategory_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getVehicleCategory();
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getVehicleCategory();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setVehicleCategory(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("vehicleCategory", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -385,22 +381,22 @@ public class BusController implements Initializable, ControlledScreen {
 
                 });
 
-        //Hiện trạng
-        status_col.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+        //Hiện trạng ==> đang dán hoặc đang trống, còn hạn hay hết hạn
+        status_col.setCellValueFactory(cellData -> Bindings.when(cellData.getValue().brandProperty().isEmpty()).then("").otherwise("Đang dán"));
         status_col.setCellFactory(TextFieldTableCell.forTableColumn());
         status_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getStatus();
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getStatus();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setStatus(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("status", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -412,17 +408,17 @@ public class BusController implements Initializable, ControlledScreen {
         numberPlate_col.setCellValueFactory(cellData -> cellData.getValue().numberPlateProperty());
         numberPlate_col.setCellFactory(TextFieldTableCell.forTableColumn());
         numberPlate_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getNumberPlate();
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getNumberPlate();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setNumberPlate(t.getNewValue());
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("numberPlate", newValue);
                         updateInBackground(filters, updateValue);
                     }
@@ -433,18 +429,18 @@ public class BusController implements Initializable, ControlledScreen {
         dateOfConstruction_col.setCellValueFactory(cellData -> cellData.getValue().dateOfConstructionProperty());
         dateOfConstruction_col.setCellFactory(dateCellFactory);
         dateOfConstruction_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, Date> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    Date oldValue = bus.getDateOfConstruction();
+                (TableColumn.CellEditEvent<BusList, Date> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    Date oldValue = busList.getDateOfConstruction();
                     Date newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setDateOfConstruction(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("dateOfConstruction", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -456,19 +452,19 @@ public class BusController implements Initializable, ControlledScreen {
         //jobCode_col.setCellFactory(textFieldCellFactory);
         jobCode_col.setCellFactory(TextFieldTableCell.forTableColumn());
         jobCode_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
 
-                    String oldValue = bus.getJobCode();
+                    String oldValue = busList.getJobCode();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setJobCode(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("jobCode", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -481,19 +477,19 @@ public class BusController implements Initializable, ControlledScreen {
         //agency_col.setCellFactory(textFieldCellFactory);
         agency_col.setCellFactory(TextFieldTableCell.forTableColumn());
         agency_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getAgency();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getAgency();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setAgency(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("agency", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -506,19 +502,19 @@ public class BusController implements Initializable, ControlledScreen {
         // brand_col.setCellFactory(textFieldCellFactory);
         brand_col.setCellFactory(TextFieldTableCell.forTableColumn());
         brand_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
 
-                    String oldValue = bus.getBrand();
+                    String oldValue = busList.getBrand();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setBrand(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("brand", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -531,19 +527,19 @@ public class BusController implements Initializable, ControlledScreen {
         //slogan_col.setCellFactory(textFieldCellFactory);
         slogan_col.setCellFactory(TextFieldTableCell.forTableColumn());
         slogan_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getSlogan();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getSlogan();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setSlogan(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("slogan", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -555,20 +551,20 @@ public class BusController implements Initializable, ControlledScreen {
         duration_col.setCellValueFactory(cellData -> cellData.getValue().durationProperty().asObject());
         duration_col.setCellFactory(integerCellFactory);
         duration_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, Integer> t) -> {
+                (TableColumn.CellEditEvent<BusList, Integer> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    int oldValue = bus.getDuration();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    int oldValue = busList.getDuration();
                     int newValue = t.getNewValue();
 
 
                     if (oldValue != newValue) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setDuration(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("duration", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -581,19 +577,19 @@ public class BusController implements Initializable, ControlledScreen {
         constructionTeam_col.setCellValueFactory(cellData -> cellData.getValue().constructionTeamProperty());
         constructionTeam_col.setCellFactory(TextFieldTableCell.forTableColumn());
         constructionTeam_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getConstructionTeam();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getConstructionTeam();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setConstructionTeam(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("constructionTeam", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -607,19 +603,19 @@ public class BusController implements Initializable, ControlledScreen {
         //printAndSupplier_col.setCellFactory(textFieldCellFactory);
         printAndSupplier_col.setCellFactory(TextFieldTableCell.forTableColumn());
         printAndSupplier_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getPrintAndSupplier();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getPrintAndSupplier();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setPrintAndSupplier(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("printAndSupplier", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -633,19 +629,19 @@ public class BusController implements Initializable, ControlledScreen {
         //description_col.setCellFactory(textFieldCellFactory);
         description_col.setCellFactory(TextFieldTableCell.forTableColumn());
         description_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getDescription();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getDescription();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setDescription(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("description", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -658,18 +654,18 @@ public class BusController implements Initializable, ControlledScreen {
         cs_col.setCellValueFactory(cellData -> cellData.getValue().csProperty());
         cs_col.setCellFactory(TextFieldTableCell.forTableColumn());
         cs_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getCs();
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getCs();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setCs(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("cs", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -681,19 +677,19 @@ public class BusController implements Initializable, ControlledScreen {
         startDay_col.setCellValueFactory(cellData -> cellData.getValue().startDayProperty());
         startDay_col.setCellFactory(dateCellFactory);
         startDay_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, Date> t) -> {
+                (TableColumn.CellEditEvent<BusList, Date> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    Date oldValue = bus.getStartDay();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    Date oldValue = busList.getStartDay();
                     Date newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setStartDay(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("startDay", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -705,19 +701,19 @@ public class BusController implements Initializable, ControlledScreen {
         endDay_col.setCellValueFactory(cellData -> cellData.getValue().endDayProperty());
         endDay_col.setCellFactory(dateCellFactory);
         endDay_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, Date> t) -> {
+                (TableColumn.CellEditEvent<BusList, Date> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    Date oldValue = bus.getEndDay();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    Date oldValue = busList.getEndDay();
                     Date newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setEndDay(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("endDay", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -730,7 +726,7 @@ public class BusController implements Initializable, ControlledScreen {
         //hợp đồng
         contract_col.setCellValueFactory(cellData -> cellData.getValue().contractProperty());
         contract_col.setCellFactory(p -> {
-            CheckBoxTableCell<Bus, Boolean> ctCell = new CheckBoxTableCell<>();
+            CheckBoxTableCell<BusList, Boolean> ctCell = new CheckBoxTableCell<>();
 
             ctCell.setSelectedStateCallback(index -> busTable.getItems().get(index).contractProperty());
             //kiểm tra xem bạn có thể click vào checkBox ở cột hợp đồng hay không...
@@ -738,19 +734,19 @@ public class BusController implements Initializable, ControlledScreen {
                 ctCell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
 
                     System.out.println(!ctCell.getItem());
-                    Bus bus = ctCell.getTableRow().getItem();
+                    BusList busList = ctCell.getTableRow().getItem();
 
                     //update checked state
-                    bus.setContract(!ctCell.getItem());
+                    busList.setContract(!ctCell.getItem());
 
 
-                    Bson filter = eq("uuid", bus.getUuid());
+                    Bson filter = eq("uuid", busList.getUuid());
                     Bson updateValue = set("contract", !ctCell.getItem());
                     updateInBackground(filter, updateValue);
 
                     //update for UI
-                    updateTheNumberOfBusesOutsideContract(busData);
-                    updateTheNumberOfBusesInTheContract(busData);
+                    updateTheNumberOfBusesOutsideContract(busListData);
+                    updateTheNumberOfBusesInTheContract(busListData);
 
                     event.consume();
 
@@ -765,20 +761,20 @@ public class BusController implements Initializable, ControlledScreen {
 //        note_col.setCellFactory(TextFieldTableCell.<Bus>forTableColumn());
         note_col.setCellFactory(TextFieldTableCell.forTableColumn());
         note_col.setOnEditCommit(
-                (TableColumn.CellEditEvent<Bus, String> t) -> {
+                (TableColumn.CellEditEvent<BusList, String> t) -> {
 
-                    Bus bus = busTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getNote();
+                    BusList busList = busTable.getSelectionModel().getSelectedItem();
+                    String oldValue = busList.getNote();
                     String newValue = t.getNewValue();
 
 
                     if (!oldValue.equals(newValue)) {
                         //update new job code
-                        ((Bus) t.getTableView().getItems()
+                        ((BusList) t.getTableView().getItems()
                                 .get(t.getTablePosition().getRow()))
                                 .setNote(t.getNewValue());
 
-                        Bson filters = eq("uuid", bus.getUuid());
+                        Bson filters = eq("uuid", busList.getUuid());
                         Bson updateValue = set("note", newValue);
 
                         updateInBackground(filters, updateValue);
@@ -790,7 +786,7 @@ public class BusController implements Initializable, ControlledScreen {
         if (checkEditPermissions()) {
             busTable.setRowFactory(
                     tableView -> {
-                        final TableRow<Bus> row = new TableRow<>();
+                        final TableRow<BusList> row = new TableRow<>();
                         final ContextMenu rowContextMenu = new ContextMenu();
                         rowContextMenu.setStyle("-fx-background-radius:10;" + "-fx-border-radius:10;" + "-fx-background-color:#ebebeb;");
                         rowContextMenu.setPrefWidth(100.0);
@@ -804,17 +800,17 @@ public class BusController implements Initializable, ControlledScreen {
                         deleteItem.setOnAction(event -> {
 
                             // needs multi row selection is set to true
-                            ObservableList<Bus> readOnlyItems = busTable.getSelectionModel().getSelectedItems();
+                            ObservableList<BusList> readOnlyItems = busTable.getSelectionModel().getSelectedItems();
 
                             // removes all selected elements for the table (UI)
-                            readOnlyItems.forEach(busData::remove);
+                            readOnlyItems.forEach(busListData::remove);
                             //delete in backend
 
-                            updateTotalQuantity(busData);
-                            updateTheNumberOfBusesWithNoAds(busData);
-                            updateTheNumberOfBusesWithAds(busData);
-                            updateTheNumberOfBusesInTheContract(busData);
-                            updateTheNumberOfBusesOutsideContract(busData);
+                            updateTotalQuantity(busListData);
+                            updateTheNumberOfBusesWithNoAds(busListData);
+                            updateTheNumberOfBusesWithAds(busListData);
+                            updateTheNumberOfBusesInTheContract(busListData);
+                            updateTheNumberOfBusesOutsideContract(busListData);
                             // clear the selection
                             busTable.getSelectionModel().clearSelection();
 
@@ -824,24 +820,24 @@ public class BusController implements Initializable, ControlledScreen {
 
                         insertNewRowItem.setOnAction(event -> {
 
-                            refreshTable(busFilteredList);
+                            refreshTable(busListFilteredList);
 
-                            Bus bus = new Bus();
+                            BusList busList = new BusList();
 
-                            insertNewBusInBackground(bus);
+                            insertNewBusInBackground(busList);
 
                             int lastIndex = busTable.getItems().size();
 
-                            busData.add(lastIndex, bus);
-                            busTable.scrollTo(busData.size());
+                            busListData.add(lastIndex, busList);
+                            busTable.scrollTo(busListData.size());
                             busTable.getSelectionModel().select(lastIndex);
                             busTable.edit(lastIndex, enterprise_col);
 
-                            updateTotalQuantity(busData);
-                            updateTheNumberOfBusesWithNoAds(busData);
-                            updateTheNumberOfBusesWithAds(busData);
-                            updateTheNumberOfBusesInTheContract(busData);
-                            updateTheNumberOfBusesOutsideContract(busData);
+                            updateTotalQuantity(busListData);
+                            updateTheNumberOfBusesWithNoAds(busListData);
+                            updateTheNumberOfBusesWithAds(busListData);
+                            updateTheNumberOfBusesInTheContract(busListData);
+                            updateTheNumberOfBusesOutsideContract(busListData);
 
                         });
 
@@ -859,29 +855,29 @@ public class BusController implements Initializable, ControlledScreen {
             MenuItem insertNewRowItem = new MenuItem("Thêm dòng mới");
             insertNewRowItem.setOnAction(event -> {
 
-                refreshTable(busFilteredList);
+                refreshTable(busListFilteredList);
 
-                Bus bus = new Bus();
+                BusList busList = new BusList();
 //
 
-                insertNewBusInBackground(bus);
+                insertNewBusInBackground(busList);
                 int lastIndex = busTable.getItems().size();
                 System.out.println("last index: " + lastIndex);
-                busData.add(lastIndex, bus);
+                busListData.add(lastIndex, busList);
                 busTable.getSelectionModel().select(lastIndex);
                 busTable.edit(lastIndex, enterprise_col);
 
-                updateTotalQuantity(busData);
-                updateTheNumberOfBusesWithNoAds(busData);
-                updateTheNumberOfBusesWithAds(busData);
-                updateTheNumberOfBusesInTheContract(busData);
-                updateTheNumberOfBusesOutsideContract(busData);
+                updateTotalQuantity(busListData);
+                updateTheNumberOfBusesWithNoAds(busListData);
+                updateTheNumberOfBusesWithAds(busListData);
+                updateTheNumberOfBusesInTheContract(busListData);
+                updateTheNumberOfBusesOutsideContract(busListData);
 
             });
             tableContextMenu.getItems().add(insertNewRowItem);
 
             MenuItem refreshAllRowInTableITem = new MenuItem("Làm mới dữ liệu");
-            refreshAllRowInTableITem.setOnAction(event -> refreshTable(busFilteredList));
+            refreshAllRowInTableITem.setOnAction(event -> refreshTable(busListFilteredList));
 
             tableContextMenu.getItems().add(refreshAllRowInTableITem);
 
@@ -895,11 +891,11 @@ public class BusController implements Initializable, ControlledScreen {
         //populate data table
         busTable.setItems(getBusList());
 
-        updateTotalQuantity(busData);
-        updateTheNumberOfBusesWithAds(busData);
-        updateTheNumberOfBusesWithNoAds(busData);
-        updateTheNumberOfBusesInTheContract(busData);
-        updateTheNumberOfBusesOutsideContract(busData);
+        updateTotalQuantity(busListData);
+        updateTheNumberOfBusesWithAds(busListData);
+        updateTheNumberOfBusesWithNoAds(busListData);
+        updateTheNumberOfBusesInTheContract(busListData);
+        updateTheNumberOfBusesOutsideContract(busListData);
     }
 
     //khởi tạo data cho on Job bus list
@@ -944,13 +940,16 @@ public class BusController implements Initializable, ControlledScreen {
                         Bson updateValue = set("onJobJobCode", newValue);
                         updateOnJobBus(filters, updateValue);
 
-                        ObservableList<Bus> target =
-                                busData.stream()
+                        ObservableList<BusList> target =
+                                busListData.stream()
                                         .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
                                         .collect(Collectors.collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
 
                         if (target.size() > 0) {
                             target.get(0).setJobCode(newValue);
+                            Bson busFilters = eq("uuid", target.get(0).getUuid());
+                            Bson busUpdateValue = set("jobCode", newValue);
+                            updateInBackground(busFilters, busUpdateValue);
                         }
                     }
 
@@ -976,13 +975,16 @@ public class BusController implements Initializable, ControlledScreen {
                         Bson updateValue = set("onJobBrand", newValue);
                         updateOnJobBus(filters, updateValue);
 
-                        ObservableList<Bus> target =
-                                busData.stream()
+                        ObservableList<BusList> target =
+                                busListData.stream()
                                         .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
                                         .collect(Collectors.collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
 
                         if (target.size() > 0) {
                             target.get(0).setBrand(newValue);
+                            Bson busFilters = eq("uuid", target.get(0).getUuid());
+                            Bson busUpdateValue = set("brand", newValue);
+                            updateInBackground(busFilters, busUpdateValue);
                         }
                     }
 
@@ -1041,8 +1043,8 @@ public class BusController implements Initializable, ControlledScreen {
                         Bson updateValue = set("onJobAgency", newValue);
                         updateOnJobBus(filters, updateValue);
 
-                        ObservableList<Bus> target =
-                                busData.stream()
+                        ObservableList<BusList> target =
+                                busListData.stream()
                                         .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
                                         .collect(Collectors.collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
 
@@ -1073,13 +1075,16 @@ public class BusController implements Initializable, ControlledScreen {
                         Bson filters = eq("onJobUuid", ojBus.getOnJobUuid());
                         Bson updateValue = set("onJobDateOfConstruction", newValue);
                         updateOnJobBus(filters, updateValue);
-                        sendDataToChartScreen(onJobBusData);
-                        ObservableList<Bus> target =
-                                busData.stream()
+                        sendOnJobBusListDataToChartScreen(onJobBusData);
+                        ObservableList<BusList> target =
+                                busListData.stream()
                                         .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
                                         .collect(Collectors.collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
                         if (target.size() > 0) {
                             target.get(0).setDateOfConstruction(newValue);
+                            Bson busFilters = eq("uuid", target.get(0).getUuid());
+                            Bson busUpdateValue = set("dateOfConstruction", newValue);
+                            updateInBackground(busFilters, busUpdateValue);
                         }
                     }
 
@@ -1105,13 +1110,17 @@ public class BusController implements Initializable, ControlledScreen {
                         Bson updateValue = set("onJobSlogan", newValue);
                         updateOnJobBus(filters, updateValue);
 
-                        ObservableList<Bus> target =
-                                busData.stream()
+                        ObservableList<BusList> target =
+                                busListData.stream()
                                         .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
                                         .collect(Collectors.collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
 
                         if (target.size() > 0) {
                             target.get(0).setSlogan(newValue);
+                            Bson busFilters = eq("uuid", target.get(0).getUuid());
+                            Bson busUpdateValue = set("slogan", newValue);
+                            updateInBackground(busFilters, busUpdateValue);
+
                         }
                     }
 
@@ -1137,8 +1146,8 @@ public class BusController implements Initializable, ControlledScreen {
                         Bson updateSingleValue = set("onJobNumberPlate", newValue);
 
                         //cập nhật lại ngày thi công cho bảng bus list
-                        ObservableList<Bus> target =
-                                busData.stream()
+                        ObservableList<BusList> target =
+                                busListData.stream()
                                         .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
                                         .collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
 
@@ -1181,8 +1190,8 @@ public class BusController implements Initializable, ControlledScreen {
         onJobRouteNumber_col.setOnEditCommit(
                 (TableColumn.CellEditEvent<OnJobBus, Integer> t) -> {
 
-                    OnJobBus bus = onJobBusTable.getSelectionModel().getSelectedItem();
-                    Integer oldValue = bus.getOnJobRouteNumber();
+                    OnJobBus ojBus = onJobBusTable.getSelectionModel().getSelectedItem();
+                    Integer oldValue = ojBus.getOnJobRouteNumber();
                     Integer newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
@@ -1190,7 +1199,7 @@ public class BusController implements Initializable, ControlledScreen {
                                 .get(t.getTablePosition().getRow())
                                 .setOnJobRouteNumber(t.getNewValue());
 
-                        Bson filters = eq("onJobUuid", bus.getOnJobUuid());
+                        Bson filters = eq("onJobUuid", ojBus.getOnJobUuid());
                         Bson updateValue = set("onJobRouteNumber", newValue);
 
                         updateOnJobBus(filters, updateValue);
@@ -1204,8 +1213,8 @@ public class BusController implements Initializable, ControlledScreen {
         onJobVehicleCategory_col.setOnEditCommit(
                 (TableColumn.CellEditEvent<OnJobBus, String> t) -> {
 
-                    OnJobBus bus = onJobBusTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getOnJobVehicleCategory();
+                    OnJobBus ojBus = onJobBusTable.getSelectionModel().getSelectedItem();
+                    String oldValue = ojBus.getOnJobVehicleCategory();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
@@ -1213,7 +1222,7 @@ public class BusController implements Initializable, ControlledScreen {
                                 .get(t.getTablePosition().getRow())
                                 .setOnJobVehicleCategory(t.getNewValue());
 
-                        Bson filters = eq("onJobUuid", bus.getOnJobUuid());
+                        Bson filters = eq("onJobUuid", ojBus.getOnJobUuid());
                         Bson updateValue = set("onJobVehicleCategory", newValue);
                         updateOnJobBus(filters, updateValue);
 
@@ -1226,8 +1235,8 @@ public class BusController implements Initializable, ControlledScreen {
         onJobEnterprise_col.setOnEditCommit(
                 (TableColumn.CellEditEvent<OnJobBus, String> t) -> {
 
-                    OnJobBus bus = onJobBusTable.getSelectionModel().getSelectedItem();
-                    String oldValue = bus.getOnJobEnterprise();
+                    OnJobBus ojBus = onJobBusTable.getSelectionModel().getSelectedItem();
+                    String oldValue = ojBus.getOnJobEnterprise();
                     String newValue = t.getNewValue();
 
                     if (!oldValue.equals(newValue)) {
@@ -1235,7 +1244,7 @@ public class BusController implements Initializable, ControlledScreen {
                                 .get(t.getTablePosition().getRow())
                                 .setOnJobEnterprise(t.getNewValue());
 
-                        Bson filters = eq("onJobUuid", bus.getOnJobUuid());
+                        Bson filters = eq("onJobUuid", ojBus.getOnJobUuid());
                         Bson updateValue = set("onJobEnterprise", newValue);
                         updateOnJobBus(filters, updateValue);
                     }
@@ -1259,17 +1268,19 @@ public class BusController implements Initializable, ControlledScreen {
 
                         Bson filters = eq("onJobUuid", ojBus.getOnJobUuid());
                         Bson updateValue = set("onJobCs", newValue);
+                        updateOnJobBus(filters, updateValue);
 
-                        ObservableList<Bus> target =
-                                busData.stream()
+                        ObservableList<BusList> target =
+                                busListData.stream()
                                         .filter(b -> b.getNumberPlate().equals(ojBus.getOnJobNumberPlate()))
                                         .collect(Collectors.collectingAndThen(toList(), l -> FXCollections.observableArrayList(l)));
 
                         if (target.size() > 0) {
                             target.get(0).setCs(newValue);
+                            Bson busFilters = eq("uuid", target.get(0).getUuid());
+                            Bson busUpdateValue = set("cs", newValue);
+                            updateInBackground(busFilters, busUpdateValue);
                         }
-
-                        updateOnJobBus(filters, updateValue);
 
                     }
 
@@ -1318,7 +1329,7 @@ public class BusController implements Initializable, ControlledScreen {
                             onJobBusTable.getSelectionModel().select(lastIndex);
                             onJobBusTable.edit(lastIndex, onJobNumberPlate_col);
 
-                            sendDataToChartScreen(onJobBusData);
+                            sendOnJobBusListDataToChartScreen(onJobBusData);
 
                         });
 
@@ -1346,7 +1357,7 @@ public class BusController implements Initializable, ControlledScreen {
                 onJobBusTable.getSelectionModel().select(lastIndex);
                 onJobBusTable.edit(lastIndex, onJobNumberPlate_col);
 
-                sendDataToChartScreen(onJobBusData);
+                sendOnJobBusListDataToChartScreen(onJobBusData);
 
 
             });
@@ -1369,7 +1380,7 @@ public class BusController implements Initializable, ControlledScreen {
 
         //gởi data qua màn hình chart để thống kê
         if (onJobBusData.size() > 0) {
-            sendDataToChartScreen(onJobBusData);
+            sendOnJobBusListDataToChartScreen(onJobBusData);
         }
 
     }
@@ -1383,19 +1394,19 @@ public class BusController implements Initializable, ControlledScreen {
         initDataForOnJobBusList();
 
 
-        busFilteredList = new FilteredList<>(busData, b -> true);
+        busListFilteredList = new FilteredList<>(busListData, b -> true);
 
         // search text field with num plate and num route
-        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> busFilteredList.setPredicate(Bus -> {
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> busListFilteredList.setPredicate(BusList -> {
             if (newValue.isEmpty() || newValue.isBlank()) {
                 return true;
             }
 
             String searchKeyWord = newValue.toLowerCase();
 
-            if (Bus.getNumberPlate().toLowerCase().contains(searchKeyWord)) {
+            if (BusList.getNumberPlate().toLowerCase().contains(searchKeyWord)) {
                 return true;
-            } else return Bus.getRouteNumber().toString().toLowerCase().contains(searchKeyWord);
+            } else return BusList.getRouteNumber().toString().toLowerCase().contains(searchKeyWord);
 //            return true;
 
         }));
@@ -1420,48 +1431,48 @@ public class BusController implements Initializable, ControlledScreen {
         showAllButton.setOnAction(event -> {
             searchTextField.setText("");
 //            routersComboBox.getItems().add(0,"All");
-            busFilteredList.setPredicate(Bus -> true);
+            busListFilteredList.setPredicate(BusList -> true);
         });
 
         //
-        SortedList<Bus> sortedList = new SortedList<>(busFilteredList);
+        SortedList<BusList> sortedList = new SortedList<>(busListFilteredList);
         sortedList.comparatorProperty().bind(busTable.comparatorProperty());
         busTable.setItems(sortedList);
 
     }
 
-    private void updateTheNumberOfBusesWithAds(ObservableList<Bus> busData) {
+    private void updateTheNumberOfBusesWithAds(ObservableList<BusList> busListData) {
 
-        int number = (int) busData.stream().filter(bus -> !bus.getBrand().isBlank()).count();
+        int number = (int) busListData.stream().filter(busList -> !busList.getBrand().isBlank()).count();
 
         adsLabel.setText(String.valueOf(number));
     }
 
-    private void updateTheNumberOfBusesWithNoAds(ObservableList<Bus> busData) {
+    private void updateTheNumberOfBusesWithNoAds(ObservableList<BusList> busListData) {
 
-        int number = (int) busData.stream().filter(bus -> bus.getBrand().isBlank()).count();
+        int number = (int) busListData.stream().filter(busList -> busList.getBrand().isBlank()).count();
 
         noAdsLabel.setText(String.valueOf(number));
     }
 
-    public void updateTheNumberOfBusesInTheContract(ObservableList<Bus> busData) {
-        int number = (int) busData.stream().filter(Bus::isContract).count();
+    public void updateTheNumberOfBusesInTheContract(ObservableList<BusList> busListData) {
+        int number = (int) busListData.stream().filter(BusList::isContract).count();
 
         insideContractLabel.setText(String.valueOf(number));
     }
 
-    public void updateTheNumberOfBusesOutsideContract(ObservableList<Bus> busData) {
-        int number = (int) busData.stream().filter(b -> !b.isContract()).count();
+    public void updateTheNumberOfBusesOutsideContract(ObservableList<BusList> busListData) {
+        int number = (int) busListData.stream().filter(b -> !b.isContract()).count();
         outsideContractLabel.setText(String.valueOf(number));
     }
 
-    private void updateTotalQuantity(ObservableList<Bus> b) {
+    private void updateTotalQuantity(ObservableList<BusList> b) {
         busTotalLabel.setText(String.valueOf(b.size()));
     }
 
     //fresh all row of table
-    private void refreshTable(FilteredList<Bus> filteredList) {
-        filteredList.setPredicate(Bus -> true);
+    private void refreshTable(FilteredList<BusList> filteredList) {
+        filteredList.setPredicate(BusList -> true);
     }
 
     //Tính số ngày chênh lệch
@@ -1470,14 +1481,14 @@ public class BusController implements Initializable, ControlledScreen {
     }
 
     //thêm mới dữ liệu xe buýt
-    public synchronized void insertNewBusInBackground(Bus bus) {
+    public synchronized void insertNewBusInBackground(BusList busList) {
 
         Task<Void> task = new Task<>() {
 
             @Override
             protected Void call() {
 
-                busDaoImp.add(bus);
+                busDaoImp.add(busList);
                 return null;
             }
 
@@ -1669,7 +1680,7 @@ public class BusController implements Initializable, ControlledScreen {
     }
 
     // format date cell
-    static class DateEditingCell extends TableCell<Bus, Date> {
+    static class DateEditingCell extends TableCell<BusList, Date> {
 
         private DatePicker datePicker;
 
@@ -1740,7 +1751,7 @@ public class BusController implements Initializable, ControlledScreen {
     }
 
     //
-    static class EditingCell extends TableCell<Bus, String> {
+    static class EditingCell extends TableCell<BusList, String> {
 
         private TextField textField;
 
@@ -1905,7 +1916,7 @@ public class BusController implements Initializable, ControlledScreen {
     }
 
     //
-    static class IntegerEditingCell extends TableCell<Bus, Integer> {
+    static class IntegerEditingCell extends TableCell<BusList, Integer> {
 
         private TextField textField;
         //private final Pattern intPattern = Pattern.compile("-?\\d+");

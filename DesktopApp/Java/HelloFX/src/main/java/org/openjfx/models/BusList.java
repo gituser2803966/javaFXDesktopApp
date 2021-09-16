@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import java.util.Date;
 
-public class Bus {
+public class BusList {
 
     private ObjectId id;
     //uuid
@@ -44,7 +44,7 @@ public class Bus {
     private StringProperty description = new SimpleStringProperty("");
     //cs
     private StringProperty cs = new SimpleStringProperty("");
-    //ngày kết thúc
+    //ngày bắt đầu chạy
     private ObjectProperty<Date> startDay = new SimpleObjectProperty<>(new Date());
     //ngày kết thúc
     private ObjectProperty<Date> endDay = new SimpleObjectProperty<>(new Date());
@@ -55,10 +55,10 @@ public class Bus {
     //note
     private StringProperty note = new SimpleStringProperty("");
 
-    public Bus() {
+    public BusList() {
     }
 
-    public Bus(ObjectId id, StringProperty uuid, StringProperty enterprise, StringProperty parkingLot, IntegerProperty routeNumber, StringProperty vehicleCategory, StringProperty status, StringProperty numberPlate, ObjectProperty<Date> dateOfConstruction, StringProperty jobCode, StringProperty agency, StringProperty brand, StringProperty slogan, IntegerProperty duration, StringProperty constructionTeam, StringProperty printAndSupplier, StringProperty description, StringProperty cs, ObjectProperty<Date> startDay, ObjectProperty<Date> endDay, IntegerProperty remainingDay, BooleanProperty contract, StringProperty note) {
+    public BusList(ObjectId id, StringProperty uuid, StringProperty enterprise, StringProperty parkingLot, IntegerProperty routeNumber, StringProperty vehicleCategory, StringProperty status, StringProperty numberPlate, ObjectProperty<Date> dateOfConstruction, StringProperty jobCode, StringProperty agency, StringProperty brand, StringProperty slogan, IntegerProperty duration, StringProperty constructionTeam, StringProperty printAndSupplier, StringProperty description, StringProperty cs, ObjectProperty<Date> startDay, ObjectProperty<Date> endDay, IntegerProperty remainingDay, BooleanProperty contract, StringProperty note) {
         this.id = id;
         this.uuid = uuid;
         this.enterprise = enterprise;

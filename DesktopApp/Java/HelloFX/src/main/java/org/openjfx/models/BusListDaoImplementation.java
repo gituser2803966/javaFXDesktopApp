@@ -13,15 +13,15 @@ import org.openjfx.service.MongoDBConnection;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class BusDaoImplementation implements BusDao{
+public class BusListDaoImplementation implements BusListDao {
 
     MongoDatabase mgDB = MongoDBConnection.getConnection();
-    MongoCollection<Bus> busCollection = mgDB.getCollection("busList", Bus.class);
+    MongoCollection<BusList> busCollection = mgDB.getCollection("busList", BusList.class);
 
     @Override
-    public void add(Bus bus) {
+    public void add(BusList busList) {
         System.out.println("start insert new bus ********");
-        busCollection.insertOne(bus);
+        busCollection.insertOne(busList);
     }
 
     @Override
@@ -30,12 +30,12 @@ public class BusDaoImplementation implements BusDao{
     }
 
     @Override
-    public Bus getBus(int id) {
+    public BusList getBus(int id) {
         return null;
     }
 
     @Override
-    public ObservableList<Bus> getBusList() {
+    public ObservableList<BusList> getBusList() {
 
         busCollection.createIndex(Indexes.ascending("routeNumber"));
         busCollection.createIndex(Indexes.ascending("routeNumber", "numberPlate"));
@@ -61,7 +61,7 @@ public class BusDaoImplementation implements BusDao{
     }
 
     public DistinctIterable<String> getOnlyRoute(){
-        DistinctIterable<String> iterable = (DistinctIterable<String>) mgDB.getCollection("bus", Bus.class).distinct("routeNumber", String.class);
+        DistinctIterable<String> iterable = (DistinctIterable<String>) mgDB.getCollection("bus", BusList.class).distinct("routeNumber", String.class);
         return iterable;
     }
 }

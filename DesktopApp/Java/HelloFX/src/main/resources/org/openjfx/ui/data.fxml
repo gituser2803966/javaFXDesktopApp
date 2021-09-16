@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="homeBorderPanel" cache="true" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controllers.BusController">
+<BorderPane fx:id="homeBorderPanel" cache="true" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controllers.BusListController">
    <center>
         <TabPane cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
@@ -254,19 +254,19 @@
                                     <TableColumn fx:id="status_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Hiện trạng" />
                                     <TableColumn fx:id="dateOfConstruction_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Ngày thi công" />
                                               <TableColumn fx:id="jobCode_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Mã hàng" />
-                                    <TableColumn fx:id="agency_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Agency" />
                                               <TableColumn fx:id="brand_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Nhãn hàng" />
                                     <TableColumn fx:id="slogan_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Slogan" />
+                                    <TableColumn fx:id="agency_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Agency" />
                                     <TableColumn fx:id="duration_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Thời hạn hợp đồng" />
                                     <TableColumn fx:id="constructionTeam_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Đội thi công" />
                                     <TableColumn fx:id="printAndSupplier_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="In - Quy cách" />
-                                    <TableColumn fx:id="description_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Mô tả" />
+                                    <TableColumn fx:id="description_col" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Mô tả" />
                                     <TableColumn fx:id="cs_col" minWidth="120.0" prefWidth="-1.0" text="CS" />
                                               <TableColumn fx:id="startDay_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Ngày bắt đầu" />
                                               <TableColumn fx:id="endDay_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Ngày kết thúc" />
                                     <TableColumn fx:id="remainingDay_col" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" text="Thời hạn (Ngày)" />
                                               <TableColumn fx:id="contract_col" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Hợp đồng" />
-                                              <TableColumn fx:id="note_col" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Ghi chú" />
+                                              <TableColumn fx:id="note_col" maxWidth="-1.0" minWidth="250.0" prefWidth="-1.0" text="Ghi chú" />
                                           </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
